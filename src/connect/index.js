@@ -3,8 +3,9 @@ import Header from "~/Components/Header";
 import Upload from "~/Components/Upload";
 import ShowImage from "~/Components/ShowImage";
 import Training from "~/Layout/Training";
-// import App from "~/App"
+import DrawLayout from "~/Components/DrawLayout";
 import {mode,training,testing} from '~/myredux'
+
 
 const mapHeaderProp2State = (state)=>{
     return {
@@ -26,21 +27,32 @@ const mapUploadProp2Action = {
 
 const mapShowImageProp2State = (state)=>{
     return {
-        'uploadSamples': state.training.uploadSamples
+        'uploadSamples': state.training.uploadSamples,
+        'modeDraw': state.training.modeDraw,
     }
 }
 const mapShowImageProp2Action = {
-    'setUploadSamples': training.actions.actionUploadSamples
+    'setUploadSamples': training.actions.actionUploadSamples,
+    'setModeDraw': training.actions.actionSwitchModeDraw
 }
 const mapTrainingProp2State = (state)=>{
     return {
-        'uploadSamples': state.training.uploadSamples
+        'uploadSamples': state.training.uploadSamples,
+        'modeDraw': state.training.modeDraw
     }
 }
+const mapDrawLayoutProp2State = (state) =>{
+    return {
 
+    }
+}
+const mapDrawLayoutProp2Action = {
+    
+}
 
 export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(Header)
 export const UploadConnect = connect(mapUploadProp2State,mapUploadProp2Action)(Upload)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
 export const TrainingConnect = connect(mapTrainingProp2State,null)(Training)
+export const DrawLayoutConnect = connect(mapTrainingProp2State,null)(DrawLayout)
 

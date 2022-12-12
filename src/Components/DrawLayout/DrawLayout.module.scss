@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+    height: 100%;
+    // background-color: red;
+    opacity: 0.4;
+    border: solid red 1px;
+    position :absolute;
+}
+.svg{
+    width:100%;
+    height:100%;
+}
+.rect {
+    fill: red;
+    stroke: #8332EB solid;
+    stroke-width: 2.43666;
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    opacity: 1;
+}
+.input-tag {
+    margin:0;
+    padding:0;
+    fill : #8332EB;
+    .input-tag--inner {
+        margin: 0;
+        padding: 0;
+        height: auto;
+        overflow: hidden;
+        background-color: blue;
+        color:white;
+        font-size: 12px;
+}
+}
+
+// .rect--active{
+
+// }

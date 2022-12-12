@@ -7,13 +7,13 @@ import image_4 from '~/assets/images/image_4.png'
 import image_5 from '~/assets/images/image_5.png'
 import tool_item_1 from '~/assets/images/tool_item_1.png'
 import tool_item_2 from '~/assets/images/tool_item_2.png'
-import { useState,useRef, useEffect } from 'react'
+import { useState,useRef, useEffect, Children } from 'react'
 
 let cx = classNames.bind(styles)
-function ShowImage({uploadSamples,setUploadSamples}){
+function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children}){
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
-    const [modeDraw,setModeDraw] = useState(false)
+    // const [modeDraw,setModeDraw] = useState(false)
 
     const handleClickNewImg = (e)=>{
         let myinput = document.getElementById("browse-file2")
@@ -50,7 +50,10 @@ function ShowImage({uploadSamples,setUploadSamples}){
                     {/* <input type="file" id="browse-file" multiple onChange={async (e)=>{ */}
                 </title>
                 <div className={cx("document-preview")}>
-                    <div className={cx("preview")}><img src={uploadSamples[activeIndex]} id="main-draw"></img></div>
+                    <div className={cx("preview")}>
+                        <img src={uploadSamples[activeIndex]} id="main-draw"></img>
+                        {children}
+                    </div>
                     <div className={cx("list")}>
                         <button className={cx("btn-nav","btn-pred")} 
                                 onClick={()=>{

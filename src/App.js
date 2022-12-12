@@ -7,8 +7,10 @@ function App() {
     <Router>
       <HeaderConnect></HeaderConnect>
       <Routes>
+      <Route path="/" element={<TrainingConnect/>} />
         <Route path="/Training" element={<TrainingConnect/>} />
-        <Route path="/Testing" element={<ShowImage/>} />
+        <Route path="/Testing" element={<TrainingConnect/>} />
+        {/* <Route path="/Testing" element={<ShowImage/>} /> */}
       </Routes>
     </Router>
   );
