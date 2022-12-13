@@ -6,7 +6,7 @@ import circle_2 from '~/assets/images/Ellipse2.svg'
 import { useEffect, useMemo } from 'react';
 let cx = classNames.bind(styles)
 function ProgressCircle({from_percentage,percentage,children,cls}){
-    const calCSSVariable = useEffect(()=>{
+    useEffect(()=>{
         let r = document.querySelector(':root');
         let right_stop,right_start,left_stop,left_start;
         if(percentage < 0.5){

@@ -1,4 +1,4 @@
-import {HeaderConnect,TrainingConnect,ProgressBarConnect, UploadTestConnect} from '~/connect';
+import {HeaderConnect,TrainingConnect,TestingConnect,ProgressBarConnect, UploadTestConnect} from '~/connect';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -8,8 +8,8 @@ function App() {
       <Routes>
       <Route path="/" element={<TrainingConnect/>} />
         <Route path="/Training" element={<TrainingConnect/>} />
-        <Route path="/Testing" element={<UploadTestConnect/>} />
-        <Route path="/Testings" element={<ProgressBarConnect/>} />
+        <Route path="/Testing" element={<TestingConnect/>} />
+        {/* <Route path="/Testings" element={<ProgressBarConnect/>} /> */}
       </Routes>
     </Router>
   );

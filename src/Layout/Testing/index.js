@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import {UploadSampleConnect,ShowImageConnect,DrawLayoutConnect, UploadTestConnect} from '~/connect'
+import {UploadSampleConnect,ShowImageConnect,DrawLayoutConnect, UploadTestConnect, SideBarShowResultConnect,ShowResultConnect} from '~/connect'
 import { mode } from '~/myredux'
-function Testing({}){
-    const [uploadTestImages,asd] = useState([])
+function Testing({uploadTestImages}){
 
     if(uploadTestImages.length==0){
         return (
@@ -11,7 +10,9 @@ function Testing({}){
     }
     else{
         return(
-            <div>asdasd</div>
+            // <div>asdasd</div>
+            // <SideBarShowResultConnect></SideBarShowResultConnect>
+            <ShowResultConnect></ShowResultConnect>
         )
     }
 }
