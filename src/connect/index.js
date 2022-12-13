@@ -1,10 +1,13 @@
 import { connect } from "react-redux";
+import {mode,training,testing} from '~/myredux'
 import Header from "~/Components/Header";
-import Upload from "~/Components/Upload";
+import UploadUploadSample from "~/Components/UploadSample";
 import ShowImage from "~/Components/ShowImage";
 import Training from "~/Layout/Training";
 import DrawLayout from "~/Components/DrawLayout";
-import {mode,training,testing} from '~/myredux'
+import ProgressBar from "~/Components/ProgressBar";
+import UploadTest from "~/Components/UploadTest";
+
 
 
 const mapHeaderProp2State = (state)=>{
@@ -51,8 +54,9 @@ const mapDrawLayoutProp2Action = {
 }
 
 export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(Header)
-export const UploadConnect = connect(mapUploadProp2State,mapUploadProp2Action)(Upload)
+export const UploadSampleConnect = connect(mapUploadProp2State,mapUploadProp2Action)(UploadUploadSample)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
 export const TrainingConnect = connect(mapTrainingProp2State,null)(Training)
 export const DrawLayoutConnect = connect(mapTrainingProp2State,null)(DrawLayout)
-
+export const ProgressBarConnect = connect(null,null)(ProgressBar)
+export const UploadTestConnect = connect(null,null)(UploadTest)

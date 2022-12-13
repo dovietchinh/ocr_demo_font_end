@@ -1,38 +1,8 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState, useCallback } from "react"
 import classNames from 'classnames/bind'
 import styles from './DrawLayout.module.scss'
+import dragElement from './dragElement'
 let cx = classNames.bind(styles)
-function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (document.getElementById(elmnt.id + "header")) {
-      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-    } else {
-      elmnt.onmousedown = dragMouseDown;
-    }
-  
-    function dragMouseDown(e) {
-      e = e || window.event;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      document.onmousemove = elementDrag;
-    }
-  
-    function elementDrag(e) {
-      e = e || window.event;
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-  
-    function closeDragElement() {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-}
 function DrawLayout(){
     let rect = useRef()
     const [mouse,setMouse] = useState({
@@ -42,19 +12,30 @@ function DrawLayout(){
     const [stateDraw,setStateDraw] = useState({
         'enable': false,
         'startpoint': null,
-        'endpoint':null,
+        // 'endpoint':null,
         'listRect': []
     })
-    // console.log('rerendern',stateDraw)
+    
     useEffect(()=>{
         let element = document.getElementById("main-draw")
-        Object.assign(element.style,{
-            'position':"relative"
-        })
+        // Object.assign(element.style,{
+        //     'position':"relative"
+        // })
         rect.current = element.getBoundingClientRect();
-
-        
+        let container = document.querySelector("."+cx("container"))
+        container.addEventListener("keyup",handleKeyUp)
     },[])
+    useEffect(()=>{
+        console.log('stateDraw.listRect change: ',stateDraw.listRect)
+        // let element = document.getElementById("main-draw")
+        // Object.assign(element.style,{
+        //     'position':"relative"
+        // })
+        // rect.current = element.getBoundingClientRect();
+        // let container = document.querySelector("."+cx("container"))
+        // container.addEventListener("keyup",handleKeyUp)
+        
+    },[stateDraw.listRect])
     const handleClick = (e)=>{
         let x = e.pageX - rect.current.left
         let y = e.pageY - rect.current.top
@@ -64,7 +45,7 @@ function DrawLayout(){
                     return{
                         'enable':false,
                         'startpoint':null,
-                        'endpoint': [x,y],
+                        // 'endpoint': [x,y],
                         'listRect':[...prev.listRect,[prev.startpoint,[x,y]]]
                     }
                 }
@@ -72,14 +53,14 @@ function DrawLayout(){
                     return {
                         'enable': true,
                         'startpoint': [x,y],
-                        'endpoint':null,
+                        // 'endpoint':null,
                         'listRect':[...prev.listRect]
                     }
                 }
             })
         }
     }
-    const onKeyDown = (e)=>{
+    const handleKeyUp = useCallback((e)=>{
         console.log('keyup: ',e.key)
         if(e.key=='n'){
             setStateDraw((prev)=>{
@@ -88,8 +69,8 @@ function DrawLayout(){
                     'enable':!prev.enable
                 }
             }) 
-    }
-    }
+        }
+    },[])
     const handleMouseMove = (e)=>{
         if(stateDraw.enable){
             setMouse({
@@ -99,11 +80,9 @@ function DrawLayout(){
         }
     }
     const draw = ()=>{
-        
         if(stateDraw.enable){
             let startPoint = stateDraw.startpoint
             let x,y,width,height
-            // console.log(startPoint)
             if(startPoint!=null){
                 x = Math.min(startPoint[0],mouse.x)
                 y = Math.min(startPoint[1],mouse.y)
@@ -112,8 +91,6 @@ function DrawLayout(){
                 width = Math.max(width,-width)
                 height = Math.max(height,-height)
             }
-            
-
             return(
                 <React.Fragment>
                     <line x1="0" y1={mouse.y} x2="1000" y2={mouse.y} stroke="red" strokeWidth="1.6"></line>
@@ -123,19 +100,8 @@ function DrawLayout(){
             )
         }
     }
-    
-    // useEffect(()=>{
-    //     let listRectx = document.querySelectorAll("rect")
-    //     if(listRectx.length==0) return
-        
-    //     console.log('listRectx: ',listRectx)
-        
-    //     for(let temp=0;temp<=listRectx.length;temp++){
-    //         dragElement(listRectx[temp])
-    //     }
-    // },[stateDraw])
     return (
-        <div className={cx("container")} onClick={handleClick} tabIndex="-1" onKeyUp={onKeyDown} onMouseMove={handleMouseMove}> 
+        <div className={cx("container")} onClick={handleClick} tabIndex="-1"  onMouseMove={handleMouseMove}> 
             <svg className={cx("svg")} id="svg-draw">
                 {   
                     stateDraw['listRect'].map((ele,index)=>{
@@ -152,14 +118,24 @@ function DrawLayout(){
                         height = Math.max(height,-height)
                         let text_height = Math.min(Math.max(height*0.2,30),20)
                         let text_width = Math.min(Math.max(width*0.5,100),64)
-                        console.log('input_y2: ',0.2*height)
-                        console.log('y: ',y)
+                       
                         return (
                             <React.Fragment>
-                            <foreignObject width={width} height="100%" x={x} y={y-text_height} className={cx("input-tag")} >
-                                <input className={cx("input-tag--inner")} 
-                                    contentEditable='true'
-                                    style={{maxWidth:width*0.5}}
+                            <foreignObject key={index+"_input"} width={width} height={text_height} x={x} y={y-text_height} className={cx("input-tag")} 
+                            style={{maxWidth:width,minWidth:"16px"}}>
+                                <input key={index+"_input2"} className={cx("input-tag--inner")} 
+                                    onFocus={(e)=>{
+  
+                                        let container = document.querySelector("."+cx("container"))
+                                        container.onkeyup=null
+                                        container.removeEventListener("keyup",handleKeyUp)
+                                    }}
+                                    onBlur={(e)=>{
+                                        
+                                        let container = document.querySelector("."+cx("container"))
+                                        container.addEventListener("keyup",handleKeyUp)
+                                    }}
+                                    style={{maxWidth:width,minWidth:"16px"}}
                                 ></input>
                             </foreignObject>
                             <rect key={index} 
@@ -167,15 +143,12 @@ function DrawLayout(){
                                     y={y}
                                     width={width}
                                     height={height}
+                                    strokeWidth={10}
                                     className={cx("rect")}
-                                    tabIndex="-1"
-                                    onFocus={(e)=>{
-                                        e.target.setAttribute("fill","blue")
-                                        e.target.setAttribute("stroke","blue");
-                                        console.log('focus',index)}
-                                    }
+                                    tabIndex="1"
+                                    style={{"zIndex": index+100}}
                                     onKeyUp={(e)=>{
-                                        console.log(e.key)
+                                        
                                         if(e.key=='Delete')
                                         {
                                             let newList = [...stateDraw.listRect]
@@ -186,34 +159,12 @@ function DrawLayout(){
                                             })
                                         }
                                     }}
-                                    // onMouseDown={(e)=>{
-                                    //     e.preventDefault()
-                                    //     let x = e.pageX - rect.current.left
-                                    //     let y = e.pageY - rect.current.top
-                                    //     console.log('MouseDown x: ',x)
-                                    //     console.log('MouseDown y: ',y)
-                                        
-                                    //     e.target.onMouseUp = (e)=>{
-                                    //         e.target.onMouseUp=null
-                                    //         e.target.onMouseMove=null
-                                    //     }
-                                    //     e.target.onMouseMove = (e)=>{
-                                    //         pos1 = pos3 - e.clientX;
-                                    //         pos2 = pos4 - e.clientY;
-                                    //         pos3 = e.clientX;
-                                    //         pos4 = e.clientY;
-                                    //         e.target.style.top = (e.target.offsetTop - pos2) + "px";
-                                    //         e.target.style.left = (e.target.offsetLeft - pos1) + "px";
-                                    //     }
-
-                                        
-                                    // }}
-                                    
-                                    
                             >
-                               
+                            
                             </rect>
                             </React.Fragment>
+
+                            
                         )
                     })
                 }

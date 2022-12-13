@@ -1,12 +1,11 @@
 import classNames from 'classnames/bind';
-import styles from "./Upload.module.scss"
-// import upload_icon from "~/assets/images/upload_icon.svg"
+import styles from "./UploadSample.module.scss"
 import {Button, Col,Container,Row} from 'react-bootstrap'
 import React from 'react';
 import icon_upload from '~/assets/images/icon.png'
 import {useState} from 'react'
 let cx = classNames.bind(styles)
-function Upload({uploadSamples,setUploadSamples}){
+function UploadSample({uploadSamples,setUploadSamples}){
     const [text,setText] = useState("");
     const handleClick = (e)=>{
         let myinput = document.getElementById("browse-file")
@@ -58,4 +57,4 @@ function Upload({uploadSamples,setUploadSamples}){
     )
 
 }
-export default Upload
+export default UploadSample

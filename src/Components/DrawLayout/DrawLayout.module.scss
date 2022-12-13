@@ -13,15 +13,24 @@
 .rect {
     fill: red;
     stroke: #8332EB solid;
-    stroke-width: 2.43666;
+    stroke-width: 10.43666;
     fill-opacity: 1;
     stroke-opacity: 1;
-    opacity: 1;
+    // opacity: 1;
+    :focus{
+        cursor: move;
+    }
+    z-index: 20;
+    :hover{
+        fill: blue;
+        cursor: move
+    }
 }
 .input-tag {
     margin:0;
     padding:0;
     fill : #8332EB;
+    
     .input-tag--inner {
         margin: 0;
         padding: 0;
@@ -31,6 +40,9 @@
         color:white;
         font-size: 12px;
 }
+}
+foreignObject{
+    width: 100;
 }
 
 // .rect--active{

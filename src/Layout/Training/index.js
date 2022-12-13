@@ -1,11 +1,11 @@
 import React from 'react'
-import {UploadConnect,ShowImageConnect,DrawLayoutConnect} from '~/connect'
+import {UploadSampleConnect,ShowImageConnect,DrawLayoutConnect} from '~/connect'
 import { mode } from '~/myredux'
 function Training({uploadSamples,modeDraw}){
 
     if(uploadSamples.length==0){
         return (
-            <UploadConnect/>
+            <UploadSampleConnect/>
         )
     }
     else{
