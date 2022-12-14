@@ -10,6 +10,12 @@ const initState = {
     'uploadSamples': [],
     'modeDraw': false,
     'progressBar':false,
+    'stateDraw':{
+        'enable': false,
+        'startpoint': null,
+        'listRect': [],
+        'listLabel': [],
+    }
 }
 
 const training = createSlice({
@@ -60,7 +66,23 @@ const training = createSlice({
                 'uploadSamples': [],
                 'modeDraw': false,
                 'progressBar':false,
+                'stateDraw':{
+                    'enable': false,
+                    'startpoint': null,
+                    'listRect': [],
+                    'listLabel': [],
+                }
             }
+        },
+        actionSetStateDraw(state,action){
+            
+            if(typeof(action.payload)=='function'){
+                state.stateDraw = action.payload(state.stateDraw)
+            }
+            else{
+                state.stateDraw = action.payload
+            }
+            
         }
     }
 });

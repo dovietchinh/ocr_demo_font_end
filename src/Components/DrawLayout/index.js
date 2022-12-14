@@ -3,19 +3,15 @@ import classNames from 'classnames/bind'
 import styles from './DrawLayout.module.scss'
 import dragElement from './dragElement'
 let cx = classNames.bind(styles)
-function DrawLayout(){
+function DrawLayout({stateDraw,setStateDraw,listRect}){
     let rect = useRef()
+    let refRectItems = useRef([])
+    let refInputItems = useRef([])
     const [mouse,setMouse] = useState({
         'x':0,
         'y':0,
     })
-    const [stateDraw,setStateDraw] = useState({
-        'enable': false,
-        'startpoint': null,
-        'listRect': [],
-        'listLabel': [],
-    })
-    
+
     useEffect(()=>{
         let element = document.getElementById("main-draw")
         // Object.assign(element.style,{
@@ -26,16 +22,9 @@ function DrawLayout(){
         container.addEventListener("keyup",handleKeyUp)
     },[])
     useEffect(()=>{
-        console.log('stateDraw.listRect change: ',stateDraw.listRect)
-        // let element = document.getElementById("main-draw")
-        // Object.assign(element.style,{
-        //     'position':"relative"
-        // })
-        // rect.current = element.getBoundingClientRect();
-        // let container = document.querySelector("."+cx("container"))
-        // container.addEventListener("keyup",handleKeyUp)
-        
-    },[stateDraw.listRect])
+        refRectItems.current = refRectItems.current.slice(0, stateDraw.listRect.length);
+        refInputItems.current = refInputItems.current.slice(0, stateDraw.listRect.length);
+    },[listRect])
     const handleClick = (e)=>{
         let x = e.pageX - rect.current.left
         let y = e.pageY - rect.current.top
@@ -46,7 +35,8 @@ function DrawLayout(){
                         'enable':false,
                         'startpoint':null,
                         // 'endpoint': [x,y],
-                        'listRect':[...prev.listRect,[prev.startpoint,[x,y]]]
+                        'listRect':[...prev.listRect,[prev.startpoint,[x,y]]],
+                        'listLabel': [...prev.listLabel,[]]
                     }
                 }
                 else{
@@ -54,7 +44,8 @@ function DrawLayout(){
                         'enable': true,
                         'startpoint': [x,y],
                         // 'endpoint':null,
-                        'listRect':[...prev.listRect]
+                        'listRect':[...prev.listRect],
+                        'listLabel': [...prev.listLabel]
                     }
                 }
             })
@@ -122,13 +113,25 @@ function DrawLayout(){
                         return (
                             <React.Fragment>
                             <foreignObject key={index+"_input"} width={width} height={text_height} x={x} y={y-text_height} className={cx("input-tag")} 
-                            style={{maxWidth:width,minWidth:"16px"}}>
+                            style={{maxWidth:width,minWidth:"16px"}}
+                            // ref={el=>refInputItems.current[index]=el}
+                            id={`foreingnObject_${index}`}
+                            >
                                 <input key={index+"_input2"} className={cx("input-tag--inner")} 
                                     onFocus={(e)=>{
-  
                                         let container = document.querySelector("."+cx("container"))
                                         container.onkeyup=null
                                         container.removeEventListener("keyup",handleKeyUp)
+                                    }}
+                                    
+                                    value={stateDraw.listLabel[index]}
+                                    onChange = {(e)=>{
+                                        let newListLabel = [...stateDraw.listLabel]
+                                        newListLabel[index] = e.target.value
+                                        setStateDraw({
+                                            ...stateDraw,
+                                            listLabel: newListLabel
+                                        })
                                     }}
                                     onBlur={(e)=>{
                                         
@@ -138,24 +141,33 @@ function DrawLayout(){
                                     style={{maxWidth:width,minWidth:"16px"}}
                                 ></input>
                             </foreignObject>
-                            <rect key={index} 
+                            <rect key={index+"_rect"} 
                                     x={x}
                                     y={y}
                                     width={width}
                                     height={height}
                                     strokeWidth={10}
+                                    ref={el=>refRectItems.current[index]=el}
                                     className={cx("rect")}
                                     tabIndex="1"
                                     style={{"zIndex": index+100}}
+                                    onMouseDown={(e)=>{
+                                        console.log('focus: ',index)
+                                        let temp = document.getElementById(`foreingnObject_${index}`)                      
+                                        dragElement(e.target,temp)
+                                    }}
+                                    
                                     onKeyUp={(e)=>{
-                                        
                                         if(e.key=='Delete')
                                         {
-                                            let newList = [...stateDraw.listRect]
-                                            newList.splice(index, 1);
+                                            let newListRect = [...stateDraw.listRect]
+                                            let newListLabel = [...stateDraw.listLabel]
+                                            newListRect.splice(index, 1);
+                                            newListLabel.splice(index, 1);
                                             setStateDraw({
                                                 ... stateDraw,
-                                                'listRect' : newList
+                                                'listRect' : newListRect,
+                                                'listLabel': newListLabel
                                             })
                                         }
                                     }}

@@ -1,4 +1,17 @@
-function dragElement(elmnt) {
+function dragElement(elmnt,elemnt2) {
+    console.log(elmnt)
+    console.log(elemnt2)
+    console.log(elmnt.getAttribute("myattribute"))
+    if(elmnt==null | typeof(elmnt)=='undefined'){
+        return
+    }
+    // if(elmnt.getAttribute("myattribute")=="true"){
+    //     return 
+    // }
+    // else{
+    //     elmnt.setAttribute("myattribute","true")
+    // }
+    console.log('here')
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     document.onmousedown = dragMouseDown;
     function dragMouseDown(e) {
@@ -16,10 +29,15 @@ function dragElement(elmnt) {
         pos4 = e.pageY;
         let x = elmnt.getAttribute('x')
         let y = elmnt.getAttribute('y')
+        let x2 = elemnt2.getAttribute('x')
+        let y2 = elemnt2.getAttribute('y')
         x = parseFloat(x)
         y = parseFloat(y)
         elmnt.setAttribute('x',x - pos1)
         elmnt.setAttribute('y',y - pos2)
+        elemnt2.setAttribute('x',x2 - pos1)
+        elemnt2.setAttribute('y',y2 - pos2)
+
     }
     function closeDragElement(e) {
         document.onmouseup = null;

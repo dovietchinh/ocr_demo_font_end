@@ -13,7 +13,8 @@ import {SideBarUploadTest} from "~/Components/UploadTest"
 
 const mapHeaderProp2State = (state)=>{
     return {
-        'mode': state.mode.mode
+        'mode': state.mode.mode,
+        'customer_ID' : state.mode.customer_ID
     }
 }
 const mapHeaderProp2Action = {
@@ -21,6 +22,7 @@ const mapHeaderProp2Action = {
     'clearMode': mode.actions.actionClearMode,
     'clearTraining': training.actions.actionClearTraining,
     'clearTesting': testing.actions.actionClearTesting,
+    'setCustomerID' : mode.actions.actionSetCustomerID
 }
 
 const mapUploadProp2State = (state)=>{
@@ -53,12 +55,25 @@ const mapTrainingProp2State = (state)=>{
     }
 }
 const mapDrawLayoutProp2State = (state) =>{
+    let listRect ,stateDraw
+    if(typeof( state.training.stateDraw)=='object'){
+        listRect = state.training.stateDraw.listRect
+        stateDraw = state.training.stateDraw
+    }
+    else{
+        listRect = []
+        stateDraw = {
+            ...state.training.stateDraw,
+            listRect: []
+        }
+    }
     return {
-
+        'stateDraw': stateDraw,
+        'listRect': listRect
     }
 }
 const mapDrawLayoutProp2Action = {
-    
+    'setStateDraw':training.actions.actionSetStateDraw
 }
 const mapSideBarShowResultProp2State = (state)=>{
     return {
@@ -123,7 +138,7 @@ export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(H
 export const UploadSampleConnect = connect(mapUploadProp2State,mapUploadProp2Action)(UploadUploadSample)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
 export const TrainingConnect = connect(mapTrainingProp2State,null)(Training)
-export const DrawLayoutConnect = connect(mapTrainingProp2State,null)(DrawLayout)
+export const DrawLayoutConnect = connect(mapDrawLayoutProp2State,mapDrawLayoutProp2Action)(DrawLayout)
 export const ProgressBarConnect = connect(mapProgressBarProp2State,mapProgressBarProp2Action)(ProgressBar)
 export const UploadTestConnect = connect(null,null)(UploadTest)
 export const SideBarShowResultConnect = connect(mapSideBarShowResultProp2State,mapSideBarShowResultProp2Action)(SideBarShowResult)

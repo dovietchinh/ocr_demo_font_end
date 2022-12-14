@@ -4,7 +4,7 @@ import thungrac from '~/assets/images/thungrac.jpg'
 import axios from 'axios';
 const { Col,ToggleButton,Navbar,Button } = require("react-bootstrap");
 
-function Header({mode,changeMode,clearMode,clearTesting,clearTraining}){
+function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID}){
     return (
         <Navbar bg="primary">
             <Col></Col>
@@ -51,7 +51,13 @@ function Header({mode,changeMode,clearMode,clearTesting,clearTraining}){
             >Clear
             {/* <img src={thungrac} style={{height:"40px",width:"100%",objectFit:"contain"}}/> */}
             </Button>
-
+            <input type='text' 
+                className="input_ID"
+                // placeholder='ID' 
+                value={customer_ID} 
+                onChange={e=>setCustomerID(e.target.value)}
+                
+                />
             <Col></Col>
         </Navbar>
         

@@ -3,6 +3,7 @@ import testing from './testing';
 import training from './training';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import storageSession from 'redux-persist/lib/storage/session'
 import thunk from 'redux-thunk';
 const { configureStore } = require("@reduxjs/toolkit");
 const { combineReducers } = require("redux");
@@ -15,7 +16,7 @@ const reducers = combineReducers({
 })
 const persistConfig = {
     key: 'root',
-    storage,
+    storage:storageSession,
 }
 const persistedReducer = persistReducer(persistConfig, reducers)
 const store = configureStore({

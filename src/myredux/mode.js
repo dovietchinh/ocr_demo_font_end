@@ -21,6 +21,9 @@ const mode = createSlice({
         actionClearMode(state,action){
             state.mode = 'training'
             state.customer_ID = Math.floor(Math.random() * 1000)
+        },
+        actionSetCustomerID(state,action){
+            state.customer_ID = action.payload
         }
 
         
