@@ -58,7 +58,7 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
                 </span>
             </div>
             <div className={cx("title")}>{children}</div>
-            <div className={cx("percent-text")}>{String(percentage*100)+"%"}</div>
+            <div className={cx("percent-text")}>{String(percentage*100).slice(0,5)+"%"}</div>
         </div>
     )
 }
@@ -108,7 +108,7 @@ function ProgressBar({changeMode,currentPercent,actionSetCurrentPercent,customer
                     console.log('error at fetch progress!: ',error)
                 })
         } 
-        const interval = setInterval(()=>{fetchData()},2000)
+        const interval = setInterval(()=>{fetchData()},3000)
         console.log('fetch')
         return ()=>clearInterval(interval)
     },[])

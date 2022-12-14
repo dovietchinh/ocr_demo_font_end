@@ -37,15 +37,15 @@ function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_I
                 clearTesting("a")
                 clearTraining("a")
                 clearMode("a")
-                let remove_api = async ()=>{
-                    await axios.post('http://10.124.69.43:9001/clear',{customer_ID:'*'})
-                        .then((r)=>{
-                            console.log()
-                        })
-                        .catch((error)=>{
-                            console.log('error: ',error)
-                        })
-                }
+                // let remove_api = async ()=>{
+                //     await axios.post('http://10.124.69.43:9001/clear',{customer_ID:'*'})
+                //         .then((r)=>{
+                //             console.log()
+                //         })
+                //         .catch((error)=>{
+                //             console.log('error: ',error)
+                //         })
+                // }
                 
             }}
             >Clear
