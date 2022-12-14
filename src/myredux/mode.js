@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import testing from "./testing";
 
 const initState = {
     'mode':'training',
+    'customer_ID': Math.floor(Math.random() * 1000)
 }
 
 const mode = createSlice({
@@ -15,7 +17,12 @@ const mode = createSlice({
             else{
                 state.mode = action.payload
             }
+        },
+        actionClearMode(state,action){
+            state.mode = 'training'
+            state.customer_ID = Math.floor(Math.random() * 1000)
         }
+
         
     }
 

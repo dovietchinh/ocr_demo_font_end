@@ -1,28 +1,34 @@
 import React from 'react'
-import {UploadSampleConnect,ShowImageConnect,DrawLayoutConnect} from '~/connect'
+import {UploadSampleConnect,ShowImageConnect,DrawLayoutConnect, ProgressBarConnect} from '~/connect'
 import { mode } from '~/myredux'
-function Training({uploadSamples,modeDraw}){
-
-    if(uploadSamples.length==0){
-        return (
-            <UploadSampleConnect/>
-        )
-    }
-    else{
-        if(modeDraw){
+function Training({uploadSamples,modeDraw,progressBar}){
+    if(progressBar==false){
+        if(uploadSamples.length==0){
             return (
-                <ShowImageConnect>
-                    <DrawLayoutConnect/>
-                </ShowImageConnect>
+                <UploadSampleConnect/>
             )
         }
         else{
-            return(
-                <React.Fragment>
-                    <ShowImageConnect/>
-                </React.Fragment>
-            )
+            if(modeDraw){
+                return (
+                    <ShowImageConnect>
+                        <DrawLayoutConnect/>
+                    </ShowImageConnect>
+                )
+            }
+            else{
+                return(
+                    <React.Fragment>
+                        <ShowImageConnect/>
+                    </React.Fragment>
+                )
+            }
         }
+    }
+    else{
+        return (
+            <ProgressBarConnect></ProgressBarConnect>
+        )
     }
 }
 

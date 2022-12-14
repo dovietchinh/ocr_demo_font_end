@@ -12,8 +12,8 @@ function DrawLayout(){
     const [stateDraw,setStateDraw] = useState({
         'enable': false,
         'startpoint': null,
-        // 'endpoint':null,
-        'listRect': []
+        'listRect': [],
+        'listLabel': [],
     })
     
     useEffect(()=>{

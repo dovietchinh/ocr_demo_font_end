@@ -3,10 +3,13 @@ import axios from "axios";
 
 const initState = {
     'is_training': false,
+    'genPercent': null,
+    'trainingPercent': null,
     'progress': 0,
     'training_id':[],
     'uploadSamples': [],
     'modeDraw': false,
+    'progressBar':false,
 }
 
 const training = createSlice({
@@ -40,6 +43,25 @@ const training = createSlice({
             state.is_training = false
             state.training_id = null
         },
+        actionSetCurrentPercent(state,action){
+            state.genPercent = action.payload.genPercent
+            state.trainingPercent = action.payload.trainingPercent
+        },
+        actionSetProgressBar(state,action){
+            state.progressBar = action.payload
+        },
+        actionClearTraining(state,action){
+            return {
+                'is_training': false,
+                'genPercent': null,
+                'trainingPercent': null,
+                'progress': 0,
+                'training_id':[],
+                'uploadSamples': [],
+                'modeDraw': false,
+                'progressBar':false,
+            }
+        }
     }
 });
 

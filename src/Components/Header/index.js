@@ -1,8 +1,10 @@
 import  './Header.scss'
 import {Link} from 'react-router-dom'
-const { Col,ToggleButton,Navbar } = require("react-bootstrap");
+import thungrac from '~/assets/images/thungrac.jpg'
+import axios from 'axios';
+const { Col,ToggleButton,Navbar,Button } = require("react-bootstrap");
 
-function Header({mode,changeMode}){
+function Header({mode,changeMode,clearMode,clearTesting,clearTraining}){
     return (
         <Navbar bg="primary">
             <Col></Col>
@@ -30,6 +32,26 @@ function Header({mode,changeMode}){
                 >Test
                 </ToggleButton>
             </Link>
+            <Button variant="primary" 
+            onClick={(e)=>{
+                clearTesting("a")
+                clearTraining("a")
+                clearMode("a")
+                let remove_api = async ()=>{
+                    await axios.post('http://10.124.69.43:9001/clear',{customer_ID:'*'})
+                        .then((r)=>{
+                            console.log()
+                        })
+                        .catch((error)=>{
+                            console.log('error: ',error)
+                        })
+                }
+                
+            }}
+            >Clear
+            {/* <img src={thungrac} style={{height:"40px",width:"100%",objectFit:"contain"}}/> */}
+            </Button>
+
             <Col></Col>
         </Navbar>
         

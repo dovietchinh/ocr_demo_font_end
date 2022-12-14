@@ -3,7 +3,9 @@ import styles from './ProgressBar.module.scss'
 import { Container, Button } from "react-bootstrap";
 import circle_1 from '~/assets/images/Ellipse1.svg'
 import circle_2 from '~/assets/images/Ellipse2.svg'
+import axios from 'axios'
 import { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 let cx = classNames.bind(styles)
 function ProgressCircle({from_percentage,percentage,children,cls}){
     useEffect(()=>{
@@ -60,17 +62,70 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
         </div>
     )
 }
-function ProgressBar(){
+function ProgressBar({changeMode,currentPercent,actionSetCurrentPercent,customer_ID}){
+    const handleClick = (e)=>{
+        changeMode("testing")
+    }
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            await axios.post("http://10.124.69.43:9001/progress",{customer_ID:String(customer_ID)})
+            // await axios.get(`${process.env.REACT_APP_BACKEND_TRAINING}/progress`)
+            
+                .then((res)=>{
+                    
+                    let a = {
+                        'data': {
+                            'generation_progress': 
+                                {
+                                    'Card_Detection': 0.0, 
+                                    'Corner_Detection': 0.0, 
+                                    'Field_Detection': 0.015
+                                }, 
+                            'train_progress': 
+                                {
+                                    'Card_Detection': 0.0, 
+                                    'Corner_Detection': 0.0, 
+                                    'Field_Detection': 0.0
+                                }
+                        },
+                        'message': 'processing', 'status': true
+                    }
+                    // console.log(res.data)
+                    let gen_ = res.data.data.generation_progress.Card_Detection
+                             + res.data.data.generation_progress.Corner_Detection
+                             + res.data.data.generation_progress.Field_Detection
+                    gen_ = gen_/3
+                    let train_ = res.data.data.train_progress.Card_Detection
+                             + res.data.data.train_progress.Corner_Detection
+                             + res.data.data.train_progress.Field_Detection
+                    train_ = train_/3
+                    actionSetCurrentPercent({
+                        'genPercent': gen_.toFixed(4),
+                        'trainingPercent': train_.toFixed(4)
+                    })
+                })
+                .catch((error)=>{
+                    console.log('error at fetch progress!: ',error)
+                })
+        } 
+        const interval = setInterval(()=>{fetchData()},2000)
+        console.log('fetch')
+        return ()=>clearInterval(interval)
+    },[])
+
+    console.log('currentPercent:' ,currentPercent)
+    console.log('currentPercent.genPercent: ',currentPercent.genPercent)
+    console.log('currentPercent.trainingPercent: ',currentPercent.trainingPercent)
     return (
         <Container >
             <div className={cx("container")}>
                 <div className={cx("progress-group")}>
-                    <ProgressCircle from_percentage={0.2} percentage={0.7} cls={cx("progress-circle--1")}>Initializing</ProgressCircle>
-                    <ProgressCircle from_percentage={0.1} percentage={0.4}  cls={cx("progress-circle--2")}>Training</ProgressCircle>
+                    <ProgressCircle from_percentage={0} percentage={currentPercent.genPercent} cls={cx("progress-circle--1")}>Initializing</ProgressCircle>
+                    <ProgressCircle from_percentage={currentPercent.trainingPercent} percentage={currentPercent.trainingPercent}  cls={cx("progress-circle--2")}>Training</ProgressCircle>
                 </div>
                 <div className={cx("actions")}>
                     <Button variant='secondary'>Cancel</Button>
-                    <Button variant="primary">Start test</Button>
+                    <Button variant="primary" onClick={handleClick}>Start test</Button>
                 </div>
             </div>
         </Container>
