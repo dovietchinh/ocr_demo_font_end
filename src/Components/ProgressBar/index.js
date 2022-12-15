@@ -4,6 +4,7 @@ import { Container, Button } from "react-bootstrap";
 import circle_1 from '~/assets/images/Ellipse1.svg'
 import circle_2 from '~/assets/images/Ellipse2.svg'
 import axios from 'axios'
+import {Link} from 'react-router-dom'
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 let cx = classNames.bind(styles)
@@ -125,7 +126,7 @@ function ProgressBar({changeMode,currentPercent,actionSetCurrentPercent,customer
                 </div>
                 <div className={cx("actions")}>
                     <Button variant='secondary'>Cancel</Button>
-                    <Button variant="primary" onClick={handleClick}>Start test</Button>
+                    <Link to="/Testing"><Button variant="primary" onClick={handleClick}>Start test</Button></Link>
                 </div>
             </div>
         </Container>

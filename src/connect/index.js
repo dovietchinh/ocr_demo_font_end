@@ -78,7 +78,8 @@ const mapDrawLayoutProp2Action = {
 const mapSideBarShowResultProp2State = (state)=>{
     return {
         'uploadTestImages':state.testing.uploadTestImages,
-        'activeImage': state.testing.activeImage
+        'activeImage': state.testing.activeImage,
+        'customer_ID': state.mode.customer_ID
     }
 }
 const mapSideBarShowResultProp2Action = {

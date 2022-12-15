@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { SideBarShowResultConnect,MainShowResultConnect } from '~/connect'
 import styles from './ShowResult.module.scss'
 let cx = classNames.bind(styles)
-function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages}){
+function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,custommer_ID}){
     
     const handleClick = (e)=>{
 
@@ -13,12 +13,15 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
         myinput.click()
     }
     useEffect( ()=>{
+
         const fetchData = async () => {
-            
+            test_json = {
+                customer_ID: custommer_ID,
+                image_info: uploadTestImages,
+            }
             const response = await axios.
-                                get(`${process.env.REACT_APP_BACKEND}/api/v1/test_img`)
+                                post('http://10.124.69.43:9001/infer',test_json)
                                 .then((r)=>{
-                                    
                                     let data = r.data.data
                                     data = data.map((x)=>{return "data:image/png;base64,"+x})
                                     actionSetResultImages(data)
