@@ -21,7 +21,9 @@ const testing = createSlice({
             state.activeImage = action.payload
         },
         actionSetResultImages(state,action){
-            state.resultImages.push(action.payload)
+            if(state.resultImages.length < state.uploadTestImages.length){
+                state.resultImages.push(action.payload)
+            }
         },
         actionSetViewIndex(state,action){
             state.viewIndex = action.payload

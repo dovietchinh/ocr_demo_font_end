@@ -11,7 +11,7 @@ import { useState,useRef, useEffect, Children } from 'react'
 import axios from 'axios'
 
 let cx = classNames.bind(styles)
-function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children,setProgressBar,customer_ID}){
+function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children,setProgressBar,customer_ID,stateDraw}){
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     // const [modeDraw,setModeDraw] = useState(false)
@@ -35,7 +35,74 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
     }
     const handleClickTraining = (e) => {
         let fetchData = async ()=>{
-            let fake_json = {
+
+            let fake_json1 = {}
+            if(stateDraw.listRect.length!=0){
+                for(let i=0;i<stateDraw.listRect.length;i++){
+                    fake_json1[stateDraw.listLabel[i]] = {
+                        "output":true,
+                        "field_info":[
+                            [
+                            "Text",
+                            "Name",
+                            "Vn"
+                        ]
+                        ],
+                        "bounding_box":[],
+                        "font": [
+                            "Times New Roman 1"
+                        ],
+                        "font_size": [
+                            27
+                        ],
+                        "font_type": [
+                            "regular"
+                        ],
+                        "font_color": [
+                            [
+                                0,
+                                0,
+                                0
+                            ]
+                        ],
+                        "font_align": [
+                            "left"
+                        ],
+                        "font_capitalize": [
+                            "default"
+                        ]
+                        
+                    }
+                }
+                
+
+                
+                for(let i=0;i<stateDraw.listRect.length;i++){
+                    console.log('stateDraw.listRect: ',i," :" ,stateDraw.listRect[i])
+                    let bbox = stateDraw.listRect[i]
+                    console.log('bbox: ',typeof(bbox))
+                    console.log('bbox_0: ',stateDraw.listRect[i][0])
+                    console.log('bbox_1: ',stateDraw.listRect[i][1])
+                    console.log('bbox0: ',bbox[0])
+                    console.log('bbox1: ',bbox[1])
+                    
+                    let xtl = Math.min(bbox[0][0],bbox[1][0])
+                    let ytl = Math.min(bbox[0][1],bbox[1][1])
+                    let xbr = Math.max(bbox[0][0],bbox[1][0])
+                    let ybr = Math.max(bbox[0][1],bbox[1][1])
+                    xtl = parseInt(xtl)
+                    ytl = parseInt(ytl)
+                    xbr = parseInt(xbr)
+                    ybr = parseInt(ybr)
+                    let new_bbox = [xtl,ytl,xbr,ybr]
+                    new_bbox = [547,
+                        34,
+                        636,
+                        124]
+                    fake_json1[stateDraw.listLabel[i]].bounding_box.push(new_bbox)
+                }
+                }
+            let fake_json2 = {
                 "QR_code": {
                     "output": false,
                     "field_info": [
@@ -47,10 +114,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            547,
-                            34,
-                            636,
-                            124
+                            660,
+                            30,
+                            760,
+                            130
                         ]
                     ]
                 },
@@ -65,10 +132,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            21,
-                            141,
-                            186,
-                            372
+                            20,
+                            165,
+                            220,
+                            440
                         ]
                     ]
                 },
@@ -84,10 +151,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     "additional_info": 12,
                     "bounding_box": [
                         [
-                            269,
-                            175,
-                            502,
-                            210
+                            330,
+                            205,
+                            600,
+                            240
                         ]
                     ],
                     "font": [
@@ -124,10 +191,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            203,
-                            231,
-                            660,
-                            262
+                            240,
+                            270,
+                            780,
+                            305
                         ]
                     ],
                     "font": [
@@ -164,10 +231,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            397,
-                            265,
-                            507,
-                            287
+                            470,
+                            310,
+                            600,
+                            335
                         ]
                     ],
                     "font": [
@@ -204,10 +271,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            315,
-                            281,
-                            375,
-                            308
+                            385,
+                            340,
+                            420,
+                            365
                         ]
                     ],
                     "font": [
@@ -244,10 +311,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            546,
-                            281,
-                            660,
-                            308
+                            670,
+                            340,
+                            780,
+                            365
                         ]
                     ],
                     "font": [
@@ -284,16 +351,16 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            397,
-                            317,
-                            660,
-                            341
+                            470,
+                            370,
+                            780,
+                            395
                         ],
                         [
-                            203,
-                            338,
-                            660,
-                            363
+                            240,
+                            395,
+                            780,
+                            420
                         ]
                     ],
                     "font": [
@@ -335,16 +402,16 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            110,
-                            377,
-                            194,
-                            394
+                            130,
+                            440,
+                            230,
+                            460
                         ],
                         [
-                            50,
-                            403,
-                            194,
-                            421
+                            60,
+                            465,
+                            230,
+                            485
                         ]
                     ],
                     "font": [
@@ -381,16 +448,16 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ],
                     "bounding_box": [
                         [
-                            461,
-                            364,
-                            660,
-                            389
+                            560,
+                            425,
+                            780,
+                            450
                         ],
                         [
-                            203,
-                            386,
-                            660,
-                            410
+                            240,
+                            450,
+                            780,
+                            475
                         ]
                     ],
                     "font": [
@@ -417,16 +484,26 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     ]
                 }
             }
+            let fake_json,is_blink_template
+            if(stateDraw.listRect.length==0){
+                fake_json = fake_json2
+                is_blink_template = true
+            }
+            else{
+                fake_json = fake_json1
+                is_blink_template = false
+            }
             let fake_data = {
                 "customer_ID": customer_ID,
-                "is_blank_template":false,
+                "is_blank_template":is_blink_template,
                 "image_features": fake_json,
-                "image_info": uploadSamples
+                "image_info": uploadSamples,
+                
             }
             console.log('adress: ',`${process.env.REACT_APP_BACKEND_TRAINING}/train`)
             // await axios.post(`${process.env.REACT_APP_BACKEND_TRAINING}/train`,fake_data)
-            // await axios.post("http://10.124.69.43:9001/clear",{customer_ID:"*"})
-            await axios.post("http://10.124.69.43:9001/train",fake_data)
+            // await axios.post("http://10.124.69.195:9001/clear",{customer_ID:"*"})
+            await axios.post("http://10.124.69.195:9001/train",fake_data)
                 .then((res)=>{
                     console.log('start_training: ',res.data)
                     setProgressBar(true)

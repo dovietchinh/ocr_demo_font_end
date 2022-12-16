@@ -10,7 +10,7 @@ import ProgressBar from "~/Components/ProgressBar";
 import UploadTest from "~/Components/UploadTest";
 import ShowResult,{SideBarShowResult,MainShowResult} from "~/Components/ShowResult"
 import {SideBarUploadTest} from "~/Components/UploadTest"
-
+import ToastMessage from "~/Components/ToastMessage";
 const mapHeaderProp2State = (state)=>{
     return {
         'mode': state.mode.mode,
@@ -18,11 +18,12 @@ const mapHeaderProp2State = (state)=>{
     }
 }
 const mapHeaderProp2Action = {
-    'changeMode': mode.actions.switchMode,
+    'switchMode': mode.actions.switchMode,
     'clearMode': mode.actions.actionClearMode,
     'clearTraining': training.actions.actionClearTraining,
     'clearTesting': testing.actions.actionClearTesting,
-    'setCustomerID' : mode.actions.actionSetCustomerID
+    'setCustomerID' : mode.actions.actionSetCustomerID,
+    // 'fetchStatus': mode.actions.fetchStatus
 }
 
 const mapUploadProp2State = (state)=>{
@@ -39,7 +40,8 @@ const mapShowImageProp2State = (state)=>{
         'uploadSamples': state.training.uploadSamples,
         'modeDraw': state.training.modeDraw,
         'progressBar': state.training.progressBar,
-        'customer_ID': state.mode.customer_ID
+        'customer_ID': state.mode.customer_ID,
+        'stateDraw' : state.training.stateDraw
     }
 }
 const mapShowImageProp2Action = {
@@ -130,11 +132,16 @@ const mapProgressBarProp2State = (state)=>{
     }
 }
 const mapProgressBarProp2Action = {
-    'changeMode': mode.actions.switchMode,
+    'switchMode': mode.actions.switchMode,
     'actionSetCurrentPercent': training.actions.actionSetCurrentPercent,
 }
 
-
+const mapToastMessageProp2State = (state) => {
+    return{
+        'toastText':state.mode.toastText,
+        'toastMode': state.mode.toastMode,
+    }
+}
 export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(Header)
 export const UploadSampleConnect = connect(mapUploadProp2State,mapUploadProp2Action)(UploadUploadSample)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
@@ -147,3 +154,4 @@ export const SideBarUploadTestConnect = connect(mapSideBarUploadTestProp2State,m
 export const TestingConnect = connect(mapTestingProp2State,mapTestingProp2Action)(Testing)
 export const MainShowResultConnect = connect(mapMainShowResultProp2State,mapMainShowResultProp2Action)(MainShowResult)
 export const ShowResultConnect = connect(null,null)(ShowResult)
+export const ToastMessageConnect = connect(mapToastMessageProp2State,null)(ToastMessage)

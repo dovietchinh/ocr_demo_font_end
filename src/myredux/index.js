@@ -16,11 +16,12 @@ const reducers = combineReducers({
 })
 const persistConfig = {
     key: 'root',
-    storage:storageSession,
+    storage:storage,
 }
 const persistedReducer = persistReducer(persistConfig, reducers)
 const store = configureStore({
-    'reducer':persistedReducer,
+    'reducer':reducers,
+    // 'reducer':persistedReducer,
     // devTools: process.env.NODE_ENV !== 'production',
     middleware: [thunk]
 })

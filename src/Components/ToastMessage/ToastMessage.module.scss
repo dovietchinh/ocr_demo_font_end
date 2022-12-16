@@ -1,0 +1,33 @@
+.toast-container{
+    display: block;
+    transform: translateX(-100%);
+    opacity: 0;
+    animation: fadein 5s;//, fadeout 5s;
+    :hover{
+        animation-duration: 99s;
+        cursor: pointer;
+    }
+}
+// @-webkit-keyframes fadein {
+//     from {bottom: 0; opacity: 0;}
+//     to {bottom: 30px; opacity: 1;}
+//   }
+  
+@keyframes fadein {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    30%{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    60%{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}

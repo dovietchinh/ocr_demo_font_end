@@ -63,13 +63,25 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
         </div>
     )
 }
-function ProgressBar({changeMode,currentPercent,actionSetCurrentPercent,customer_ID}){
+function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer_ID}){
     const handleClick = (e)=>{
-        changeMode("testing")
+        switchMode("testing")
+    }
+    const handleClickCancel = (e)=>{
+        let fetchAPI = async ()=>{
+            await axios.post("http://10.124.69.195:9002/reload_models",{customer_ID:String(customer_ID)})
+                .then((res)=>{
+                    console.log(res.data)
+                })
+                .catch((error)=>{
+                    console.log('error at: ',error)
+                })
+        }
+        
     }
     useEffect(()=>{
         const fetchData = async ()=>{
-            await axios.post("http://10.124.69.43:9001/progress",{customer_ID:String(customer_ID)})
+            await axios.post("http://10.124.69.195:9001/progress",{customer_ID:String(customer_ID)})
             // await axios.get(`${process.env.REACT_APP_BACKEND_TRAINING}/progress`)
             
                 .then((res)=>{
@@ -125,7 +137,7 @@ function ProgressBar({changeMode,currentPercent,actionSetCurrentPercent,customer
                     <ProgressCircle from_percentage={currentPercent.trainingPercent} percentage={currentPercent.trainingPercent}  cls={cx("progress-circle--2")}>Training</ProgressCircle>
                 </div>
                 <div className={cx("actions")}>
-                    <Button variant='secondary'>Cancel</Button>
+                    <Button variant='secondary' onClick={handleClickCancel}>Cancel</Button>
                     <Link to="/Testing"><Button variant="primary" onClick={handleClick}>Start test</Button></Link>
                 </div>
             </div>

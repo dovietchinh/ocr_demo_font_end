@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { SideBarShowResultConnect,MainShowResultConnect } from '~/connect'
 import styles from './ShowResult.module.scss'
 let cx = classNames.bind(styles)
-function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,custommer_ID}){
+function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,customer_ID}){
     
     const handleClick = (e)=>{
 
@@ -15,14 +15,16 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
     useEffect( ()=>{
 
         const fetchData = async () => {
-            test_json = {
-                customer_ID: custommer_ID,
-                image_info: uploadTestImages,
+            let test_json = {
+                customer_ID: customer_ID,
+                image_info: [uploadTestImages.at(-1)],
             }
+            console.log(test_json.customer_ID)
             const response = await axios.
-                                post('http://10.124.69.43:9001/infer',test_json)
+                                post('http://10.124.69.195:9001/infer',test_json)
                                 .then((r)=>{
-                                    let data = r.data.data
+                                    console.log(r.data)
+                                    let data = r.data.images
                                     data = data.map((x)=>{return "data:image/png;base64,"+x})
                                     actionSetResultImages(data)
                                 })
@@ -30,7 +32,6 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
                                     console.log(e)
                                 })
         }
-        
         fetchData()
     },[uploadTestImages])
     return (
@@ -55,6 +56,7 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
                                 }
         
                                 }
+                            e.target.value = ''
                         }}>
 
                 </input>
@@ -99,34 +101,6 @@ function MainShowResult({activeImage,resultImages,viewIndex,actionSetViewIndex})
             setImageView(resultImages[activeImage])
         }
     },[activeImage,resultImages])
-    // const draw = ()=>{
-    //     if(check.current)
-    //     {   
-            
-    //         resultImages[activeImage].map((ele,index)=>{
-    //             let cls = ""
-    //             if(viewIndex)
-    //             {
-    //                 if(index==viewIndex){
-    //                     cls = "image-view--action"
-    //             }}
-    //             return (
-    //                 <div key={index} className={cx("image-view",cls)}
-    //                     onClick={(e)=>{
-    //                         actionSetViewIndex(index)
-    //                     }}
-    //                     >
-    //                     <img src={ele} style={{
-    //                         width:"100%",
-    //                         height:"100%",
-    //                         objectFit: "contain"
-    //                         }}></img>
-    //                 </div>
-    //             )
-    //         })
-    //     }
-        
-    // }
     return (
         <div className={cx("main-section")}>
             <div className={cx("main__title")}>

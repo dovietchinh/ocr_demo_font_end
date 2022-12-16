@@ -4,7 +4,7 @@ import thungrac from '~/assets/images/thungrac.jpg'
 import axios from 'axios';
 const { Col,ToggleButton,Navbar,Button } = require("react-bootstrap");
 
-function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID}){
+function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID}){
     return (
         <Navbar bg="primary">
             <Col></Col>
@@ -13,7 +13,9 @@ function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_I
                 checked={mode!='training'}
                 type="checkbox"
                 onClick={(e)=>{
-                    changeMode("training")
+                    switchMode("training")
+                    
+                  
                 }}
                 className={mode=="training" ? "me-2 untoggled-button-active" : "me-2 untoggled-button"}
                 >Training
@@ -26,7 +28,10 @@ function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_I
                 type="checkbox"
                 checked={mode!='testing'}
                 onClick={(e)=>{
-                    changeMode("testing")
+                    switchMode("testing")
+                    
+                  
+                    
                 }}
                 id="bt-2"
                 >Test
@@ -34,11 +39,37 @@ function Header({mode,changeMode,clearMode,clearTesting,clearTraining,customer_I
             </Link>
             <Button variant="primary" 
             onClick={(e)=>{
+                let convertAPI = async ()=>{
+                    console.log('start Convert!')
+                    await axios.post('http://10.124.69.195:9002/convert',{customer_ID})
+                        .then((r)=>{
+                            console.log('convert done')
+                            console.log(r.data)
+                        })
+                        .catch((error)=>{
+                            console.log('error convert: ',error)
+                        })
+                    await axios.post('http://10.124.69.195:9002/reload_models',{customer_ID})
+                        .then((r)=>{
+                            console.log('reload models done!')
+                        })
+                        .catch((error)=>{
+                            console.log('error reload: ',error)
+                        })
+
+                }
+                convertAPI();
+            }}
+            >Convert Model
+            {/* <img src={thungrac} style={{height:"40px",width:"100%",objectFit:"contain"}}/> */}
+            </Button>
+            <Button variant="primary" 
+            onClick={(e)=>{
                 clearTesting("a")
                 clearTraining("a")
                 clearMode("a")
                 // let remove_api = async ()=>{
-                //     await axios.post('http://10.124.69.43:9001/clear',{customer_ID:'*'})
+                //     await axios.post('http://10.124.69.195:9001/clear',{customer_ID:'*'})
                 //         .then((r)=>{
                 //             console.log()
                 //         })
