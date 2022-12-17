@@ -7,8 +7,9 @@ import classNames from 'classnames/bind'
 let cx = classNames.bind(styles)
 function ToastMessage({toastText,toastMode}){
     return(
+        
         toastMode && <ToastContainer className={"p-3 "+cx("toast-container")} position="left-start">
-                <Toast bg="primary">
+                <Toast bg="primary" >
                     <Toast.Header closeButton={false}>
                     <img
                         src="holder.js/20x20?text=%20"
@@ -16,9 +17,9 @@ function ToastMessage({toastText,toastMode}){
                         alt=""
                     />
                     <strong className="me-auto">NOTIFICATION</strong>
-                    <small>11 mins ago</small>
+                    <small className={cx("X")}>X</small>
                     </Toast.Header>
-                    <Toast.Body>{toastText}</Toast.Body>
+                    <Toast.Body className={cx("toast-text")}>{toastText}</Toast.Body>
                 </Toast>
         </ToastContainer>
     )

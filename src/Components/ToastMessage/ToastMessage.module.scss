@@ -3,16 +3,24 @@
     transform: translateX(-100%);
     opacity: 0;
     animation: fadein 5s;//, fadeout 5s;
-    :hover{
-        animation-duration: 99s;
+    &:hover {
+        transform: translateX(0%);
+        animation-play-state: paused;
         cursor: pointer;
     }
 }
-// @-webkit-keyframes fadein {
-//     from {bottom: 0; opacity: 0;}
-//     to {bottom: 30px; opacity: 1;}
-//   }
-  
+.X{
+    cursor: ponter;
+    width: 15px;
+    background-color: gray;
+    text-align: center;
+    color: white;
+    border-radius: 25%;
+}
+.toast-text{
+    color: white;
+}
+
 @keyframes fadein {
     0% {
         transform: translateX(-100%);

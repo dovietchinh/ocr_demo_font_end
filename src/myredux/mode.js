@@ -7,9 +7,10 @@ const initState = {
     'customer_ID': Math.floor(Math.random() * 1000),
     'toastText': "asd",
     'toastMode': false,
+    'loadingMode': false
 }
 
-const fetchData = createAsyncThunk(
+const switchMode = createAsyncThunk(
     'mode/switchMode',
     async (userId, thunkAPI)=>{
         console.log(userId)
@@ -31,11 +32,14 @@ const mode = createSlice({
                 if(action.payload=='training'){
                     state.toastText='training'
                     state.toastMode = true
+                    state.loadingMode = true
                     // setTimeout(()=>{state.toastMode = false},5000)
                 }
                 else{
                     state.toastText='testing'
                     state.toastMode = false
+                    state.loadingMode = false
+
                 }
             }
         },
@@ -48,18 +52,18 @@ const mode = createSlice({
         }
     },
     extraReducers:(builder)=>{
-        builder.addCase(fetchData.pending, (state,action)=>{
+        builder.addCase(switchMode.pending, (state,action)=>{
                     // state.mode.loadingState = true
                     console.log('action pending.....')
                     console.log('action.type: ',action.type)
                     console.log('action.payload: ',action.payload)
                 })
-                .addCase(fetchData.fulfilled,(state,action)=>{
+                .addCase(switchMode.fulfilled,(state,action)=>{
                     console.log('action fullfield.....')
                     console.log('action.type: ',action.type)
                     console.log('action.payload: ',action.payload)
                 })
-                .addCase(fetchData.rejected,(state,action)=>{
+                .addCase(switchMode.rejected,(state,action)=>{
                     console.log('action rejected.....')
                     console.log('action.type: ',action.type)
                     console.log('action.payload: ',action.payload)

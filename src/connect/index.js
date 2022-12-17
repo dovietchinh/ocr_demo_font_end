@@ -8,6 +8,7 @@ import Testing from "~/Layout/Testing";
 import DrawLayout from "~/Components/DrawLayout";
 import ProgressBar from "~/Components/ProgressBar";
 import UploadTest from "~/Components/UploadTest";
+import Loading from "~/Components/Loading"
 import ShowResult,{SideBarShowResult,MainShowResult} from "~/Components/ShowResult"
 import {SideBarUploadTest} from "~/Components/UploadTest"
 import ToastMessage from "~/Components/ToastMessage";
@@ -142,6 +143,11 @@ const mapToastMessageProp2State = (state) => {
         'toastMode': state.mode.toastMode,
     }
 }
+const mapLoadingProp2State = (state) =>{
+    return {
+        'loadingMode':state.mode.loadingMode
+    }
+}
 export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(Header)
 export const UploadSampleConnect = connect(mapUploadProp2State,mapUploadProp2Action)(UploadUploadSample)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
@@ -155,3 +161,4 @@ export const TestingConnect = connect(mapTestingProp2State,mapTestingProp2Action
 export const MainShowResultConnect = connect(mapMainShowResultProp2State,mapMainShowResultProp2Action)(MainShowResult)
 export const ShowResultConnect = connect(null,null)(ShowResult)
 export const ToastMessageConnect = connect(mapToastMessageProp2State,null)(ToastMessage)
+export const LoadingConnect = connect(mapLoadingProp2State,null)(Loading)
