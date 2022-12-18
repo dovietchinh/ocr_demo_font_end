@@ -14,16 +14,36 @@ const testing = createSlice({
     initialState : initState,
     reducers:{
         actionUploadTestImg(state,action){
-            state.uploadTestImages.push(action.payload)
-            state.activeImage = state.uploadTestImages.length - 1
+            console.log(typeof(action.payload))
+            if(typeof(action.payload)!='object'){
+                state.uploadTestImages.push(action.payload)
+                state.activeImage = state.uploadTestImages.length - 1
+            }
+            else{
+                state.uploadTestImages = action.payload
+                if(state.activeImage>0){
+                    state.activeImage -= 1
+                }
+                
+            }
+            
         },
         actionSetActiveImage(state,action){
             state.activeImage = action.payload
         },
         actionSetResultImages(state,action){
+            
             if(state.resultImages.length < state.uploadTestImages.length){
                 state.resultImages.push(action.payload)
             }
+            
+            if(typeof(action.payload)!='object'){
+            }
+            else{
+                state.resultImages = action.payload
+
+            }
+            
         },
         actionSetViewIndex(state,action){
             state.viewIndex = action.payload

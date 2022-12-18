@@ -502,8 +502,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
             }
             console.log('adress: ',`${process.env.REACT_APP_BACKEND_TRAINING}/train`)
             // await axios.post(`${process.env.REACT_APP_BACKEND_TRAINING}/train`,fake_data)
-            // await axios.post("http://10.124.69.195:9001/clear",{customer_ID:"*"})
-            await axios.post("http://10.124.69.195:9001/train",fake_data)
+            // await axios.post("http://10.124.69.195:18001/clear",{customer_ID:"*"})
+            await axios.post("http://10.124.69.195:18001/train",fake_data)
                 .then((res)=>{
                     console.log('start_training: ',res.data)
                     setProgressBar(true)

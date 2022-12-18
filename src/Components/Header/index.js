@@ -41,15 +41,16 @@ function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_I
             onClick={(e)=>{
                 let convertAPI = async ()=>{
                     console.log('start Convert!')
-                    await axios.post('http://10.124.69.195:9002/convert',{customer_ID})
-                        .then((r)=>{
-                            console.log('convert done')
-                            console.log(r.data)
-                        })
-                        .catch((error)=>{
-                            console.log('error convert: ',error)
-                        })
-                    await axios.post('http://10.124.69.195:9002/reload_models',{customer_ID})
+                    let r = await axios.post('http://10.124.69.195:18002/convert',{customer_ID})
+                        // .then((r)=>{
+                            // console.log('convert done')
+                            // console.log(r.data)
+                        // })
+                        // .catch((error)=>{
+                            // console.log('error convert: ',error)
+                        // })
+                    console.log(r.data)
+                    await axios.post('http://10.124.69.195:18002/reload_models',{customer_ID})
                         .then((r)=>{
                             console.log('reload models done!')
                         })
@@ -61,26 +62,14 @@ function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_I
                 convertAPI();
             }}
             >Convert Model
-            {/* <img src={thungrac} style={{height:"40px",width:"100%",objectFit:"contain"}}/> */}
             </Button>
             <Button variant="primary" 
             onClick={(e)=>{
                 clearTesting("a")
                 clearTraining("a")
                 clearMode("a")
-                // let remove_api = async ()=>{
-                //     await axios.post('http://10.124.69.195:9001/clear',{customer_ID:'*'})
-                //         .then((r)=>{
-                //             console.log()
-                //         })
-                //         .catch((error)=>{
-                //             console.log('error: ',error)
-                //         })
-                // }
-                
             }}
             >Clear
-            {/* <img src={thungrac} style={{height:"40px",width:"100%",objectFit:"contain"}}/> */}
             </Button>
             <input type='text' 
                 className="input_ID"

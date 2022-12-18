@@ -148,6 +148,9 @@ const mapLoadingProp2State = (state) =>{
         'loadingMode':state.mode.loadingMode
     }
 }
+const mapLoadingProp2Action = {
+    'setLoadingMode': mode.actions.actionSetLoadingMode
+}
 export const HeaderConnect = connect(mapHeaderProp2State,mapHeaderProp2Action)(Header)
 export const UploadSampleConnect = connect(mapUploadProp2State,mapUploadProp2Action)(UploadUploadSample)
 export const ShowImageConnect = connect(mapShowImageProp2State,mapShowImageProp2Action)(ShowImage)
@@ -161,4 +164,4 @@ export const TestingConnect = connect(mapTestingProp2State,mapTestingProp2Action
 export const MainShowResultConnect = connect(mapMainShowResultProp2State,mapMainShowResultProp2Action)(MainShowResult)
 export const ShowResultConnect = connect(null,null)(ShowResult)
 export const ToastMessageConnect = connect(mapToastMessageProp2State,null)(ToastMessage)
-export const LoadingConnect = connect(mapLoadingProp2State,null)(Loading)
+export const LoadingConnect = connect(mapLoadingProp2State,mapLoadingProp2Action)(Loading)

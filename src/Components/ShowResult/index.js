@@ -7,7 +7,6 @@ let cx = classNames.bind(styles)
 function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,customer_ID}){
     
     const handleClick = (e)=>{
-
         let myinput = document.getElementById("browse-file-show-test")
         myinput.setAttribute("display","none")
         myinput.click()
@@ -21,7 +20,8 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
             }
             console.log(test_json.customer_ID)
             const response = await axios.
-                                post('http://10.124.69.195:9001/infer',test_json)
+                                // post('http://10.124.69.195:18001/infer',test_json)
+                                get('http://127.0.0.1:9000/api/v1/test_img')
                                 .then((r)=>{
                                     console.log(r.data)
                                     let data = r.data.images
@@ -74,6 +74,14 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
                                     actionSetActiveImage(index)
                                 }}
                                 className={cx("sidebar__default-thumbnail",cls)}
+                                onKeyDown={(e)=>{
+                                    if(e.key=='Delete'){
+                                        let new_uploadTestImages = [...uploadTestImages]
+                                        new_uploadTestImages.splice(activeImage,1)
+                                        actionUploadTestImg(new_uploadTestImages)
+                                    }
+                                }}
+                                tabIndex="-1"
                                 > 
                                 <img src={ele}/>
                             </div>

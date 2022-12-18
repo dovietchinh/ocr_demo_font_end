@@ -22,7 +22,6 @@ function SideBarUploadTest({actionUploadTestImg}){
                         <span className={cx("title-blue")}>Upload a file</span>
                         <span className={cx("subtitle")}>PNG, JPG,GIF up to 20MB</span>
                     </div>
-                    
                     <button className={cx("btn")} onClick={handleClick}>
                         <span>Browse to upload</span>
                     </button>
@@ -39,9 +38,7 @@ function SideBarUploadTest({actionUploadTestImg}){
                             fileReader.onload = (e) => {
                                 actionUploadTestImg(e.target.result)
                             }
-      
                         }
-
                     }}></input>
                 </div>
             </div>

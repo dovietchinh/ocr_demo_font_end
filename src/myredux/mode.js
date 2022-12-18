@@ -11,10 +11,10 @@ const initState = {
 }
 
 const switchMode = createAsyncThunk(
-    'mode/switchMode',
+    'switchMode',
     async (userId, thunkAPI)=>{
         console.log(userId)
-        const r = axios.get('http://10.124.69.43:9000/api/v1/count')
+        const r = axios.get('http://10.124.69.195:9000/api/v1/count')
         return r.data
     }
 )
@@ -30,18 +30,23 @@ const mode = createSlice({
             else{
                 state.mode = action.payload
                 if(action.payload=='training'){
-                    state.toastText='training'
-                    state.toastMode = true
-                    state.loadingMode = true
+                    // state.toastText='training'
+                    // state.toastMode = true
+                    // state.loadingMode = true
                     // setTimeout(()=>{state.toastMode = false},5000)
+                    state.customer_ID = Math.floor(Math.random() * 1000)
                 }
                 else{
-                    state.toastText='testing'
-                    state.toastMode = false
-                    state.loadingMode = false
+                    // state.toastText='testing'
+                    // state.toastMode = false
+                    // state.loadingMode = false
+                    state.customer_ID = 0
 
                 }
             }
+        },
+        actionSetLoadingMode(state,action){
+            state.loadingMode = action.payload
         },
         actionClearMode(state,action){
             state.mode = 'training'
