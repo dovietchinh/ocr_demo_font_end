@@ -20,8 +20,8 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
             }
             console.log(test_json.customer_ID)
             const response = await axios.
-                                // post('http://10.124.69.195:18001/infer',test_json)
-                                get('http://127.0.0.1:9000/api/v1/test_img')
+                                post('http://10.124.69.195:18001/infer',test_json)
+                                // get('http://127.0.0.1:9000/api/v1/test_img')
                                 .then((r)=>{
                                     console.log(r.data)
                                     let data = r.data.images
