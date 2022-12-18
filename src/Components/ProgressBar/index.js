@@ -63,11 +63,11 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
         </div>
     )
 }
-function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer_ID}){
+function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer_ID,actionSetLoadingMode}){
     const handleClick = (e)=>{
-        switchMode("testing")
         
         let convertAPI = async ()=>{
+            actionSetLoadingMode(true)
             console.log('start Convert!')
             await axios.post('http://10.124.69.195:18002/convert',{customer_ID})
                 .then((r)=>{
@@ -84,25 +84,22 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer
                 .catch((error)=>{
                     console.log('error reload: ',error)
                 })
-
+            actionSetLoadingMode(false)
+            switchMode("testing")
         }
         convertAPI();
      
     }
     const handleClickCancel = (e)=>{
-        let fetchAPI = async ()=>{
-            await axios.post("http://10.124.69.195:18002/reload_models",{customer_ID:String(customer_ID)})
-                .then((res)=>{
-                    console.log(res.data)
-                })
-                .catch((error)=>{
-                    console.log('error at: ',error)
-                })
+        
+        let fetchData = async ()=>{
+            await axios.post('http://10.124.69.195:18001/reload')
+
         }
         
     }
     useEffect(()=>{
-        const fetchData = async ()=>{
+        let fetchData = async ()=>{
             await axios.post("http://10.124.69.195:18001/progress",{customer_ID:String(customer_ID)})
             // await axios.get(`${process.env.REACT_APP_BACKEND_TRAINING}/progress`)
             

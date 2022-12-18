@@ -2,11 +2,12 @@ import  './Header.scss'
 import {Link} from 'react-router-dom'
 import thungrac from '~/assets/images/thungrac.jpg'
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 const { Col,ToggleButton,Navbar,Button } = require("react-bootstrap");
 
-function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID}){
+function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID,actionSetModeLoginSuccess}){
     return (
-        <Navbar bg="primary">
+        <Navbar bg="primary" className='NavBar--Header'>
             <Col></Col>
             <Link to="/Training">
                 <ToggleButton variant="outline-primary" 
@@ -39,48 +40,30 @@ function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_I
             </Link>
             <Button variant="primary" 
             onClick={(e)=>{
-                let convertAPI = async ()=>{
-                    console.log('start Convert!')
-                    let r = await axios.post('http://10.124.69.195:18002/convert',{customer_ID})
-                        // .then((r)=>{
-                            // console.log('convert done')
-                            // console.log(r.data)
-                        // })
-                        // .catch((error)=>{
-                            // console.log('error convert: ',error)
-                        // })
-                    console.log(r.data)
-                    await axios.post('http://10.124.69.195:18002/reload_models',{customer_ID})
-                        .then((r)=>{
-                            console.log('reload models done!')
-                        })
-                        .catch((error)=>{
-                            console.log('error reload: ',error)
-                        })
-
-                }
-                convertAPI();
-            }}
-            >Convert Model
-            </Button>
-            <Button variant="primary" 
-            onClick={(e)=>{
-                clearTesting("a")
-                clearTraining("a")
-                clearMode("a")
+                clearTesting()
+                clearTraining()
+                clearMode()
             }}
             >Clear
             </Button>
-            <input type='text' 
+            {/* <input type='text' 
                 className="input_ID"
                 // placeholder='ID' 
                 value={customer_ID} 
                 onChange={e=>setCustomerID(e.target.value)}
                 
-                />
+                /> */}
             <Col></Col>
+            <Button variant="primary" 
+                    className='logout-btn'
+                    onClick={(e)=>{
+                        setCustomerID('0')
+                        actionSetModeLoginSuccess(false)
+                    }}
+                    >Logout
+            </Button>
+            
         </Navbar>
-        
     )
 }
 

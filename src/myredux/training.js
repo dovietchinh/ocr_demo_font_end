@@ -18,6 +18,8 @@ const initState = {
     }
 }
 
+
+
 const training = createSlice({
     name: 'training',
     initialState : initState,

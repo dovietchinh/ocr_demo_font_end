@@ -24,7 +24,7 @@ const mapHeaderProp2Action = {
     'clearTraining': training.actions.actionClearTraining,
     'clearTesting': testing.actions.actionClearTesting,
     'setCustomerID' : mode.actions.actionSetCustomerID,
-    // 'fetchStatus': mode.actions.fetchStatus
+    'actionSetModeLoginSuccess' : mode.actions.actionSetModeLoginSuccess
 }
 
 const mapUploadProp2State = (state)=>{
@@ -48,7 +48,8 @@ const mapShowImageProp2State = (state)=>{
 const mapShowImageProp2Action = {
     'setUploadSamples': training.actions.actionUploadSamples,
     'setModeDraw': training.actions.actionSwitchModeDraw,
-    'setProgressBar': training.actions.actionSetProgressBar
+    'setProgressBar': training.actions.actionSetProgressBar,
+    'actionSetLoadingMode': mode.actions.actionSetLoadingMode
 }
 const mapTrainingProp2State = (state)=>{
     return {
@@ -135,6 +136,7 @@ const mapProgressBarProp2State = (state)=>{
 const mapProgressBarProp2Action = {
     'switchMode': mode.actions.switchMode,
     'actionSetCurrentPercent': training.actions.actionSetCurrentPercent,
+    'actionSetLoadingMode': mode.actions.actionSetLoadingMode
 }
 
 const mapToastMessageProp2State = (state) => {
@@ -164,4 +166,4 @@ export const TestingConnect = connect(mapTestingProp2State,mapTestingProp2Action
 export const MainShowResultConnect = connect(mapMainShowResultProp2State,mapMainShowResultProp2Action)(MainShowResult)
 export const ShowResultConnect = connect(null,null)(ShowResult)
 export const ToastMessageConnect = connect(mapToastMessageProp2State,null)(ToastMessage)
-export const LoadingConnect = connect(mapLoadingProp2State,mapLoadingProp2Action)(Loading)
+// export const LoadingConnect = connect(mapLoadingProp2State,mapLoadingProp2Action)(Loading)

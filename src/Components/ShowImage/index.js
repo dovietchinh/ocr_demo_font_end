@@ -11,7 +11,9 @@ import { useState,useRef, useEffect, Children } from 'react'
 import axios from 'axios'
 
 let cx = classNames.bind(styles)
-function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children,setProgressBar,customer_ID,stateDraw}){
+function ShowImage({uploadSamples,setUploadSamples,modeDraw,
+                    setModeDraw,children,setProgressBar,
+                    customer_ID,stateDraw,actionSetLoadingMode}){
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     // const [modeDraw,setModeDraw] = useState(false)
@@ -35,7 +37,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
     }
     const handleClickTraining = (e) => {
         let fetchData = async ()=>{
-
+            // actionSetLoadingMode(true)
             let fake_json1 = {}
             if(stateDraw.listRect.length!=0){
                 for(let i=0;i<stateDraw.listRect.length;i++){
@@ -102,388 +104,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                     fake_json1[stateDraw.listLabel[i]].bounding_box.push(new_bbox)
                 }
                 }
-            let fake_json2 = {
-                "QR_code": {
-                    "output": false,
-                    "field_info": [
-                        [
-                            "Image",
-                            "QR_code",
-                            null
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            660,
-                            30,
-                            760,
-                            130
-                        ]
-                    ]
-                },
-                "Portrait": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Image",
-                            "Portrait",
-                            null
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            20,
-                            165,
-                            220,
-                            440
-                        ]
-                    ]
-                },
-                "ID": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Characters",
-                            "X_numbers"
-                        ]
-                    ],
-                    "additional_info": 12,
-                    "bounding_box": [
-                        [
-                            330,
-                            205,
-                            600,
-                            240
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        38
-                    ],
-                    "font_type": [
-                        "bold"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Name": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Name",
-                            "Vn"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            240,
-                            270,
-                            780,
-                            305
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        30
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "upper"
-                    ]
-                },
-                "Dob": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Time",
-                            "Full_slash"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            470,
-                            310,
-                            600,
-                            335
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        27
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Sex": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Sex",
-                            "Vn"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            385,
-                            340,
-                            420,
-                            365
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        27
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Nat": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Place",
-                            "Nationality"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            670,
-                            340,
-                            780,
-                            365
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        27
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Hometown": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Place",
-                            "Brief"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            470,
-                            370,
-                            780,
-                            395
-                        ],
-                        [
-                            240,
-                            395,
-                            780,
-                            420
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        27
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Doe": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Time",
-                            "Full_slash"
-                        ],
-                        [
-                            "Text",
-                            "Time",
-                            "Special"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            130,
-                            440,
-                            230,
-                            460
-                        ],
-                        [
-                            60,
-                            465,
-                            230,
-                            485
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        22
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                },
-                "Address": {
-                    "output": true,
-                    "field_info": [
-                        [
-                            "Text",
-                            "Place",
-                            "Full"
-                        ]
-                    ],
-                    "bounding_box": [
-                        [
-                            560,
-                            425,
-                            780,
-                            450
-                        ],
-                        [
-                            240,
-                            450,
-                            780,
-                            475
-                        ]
-                    ],
-                    "font": [
-                        "Times New Roman 1"
-                    ],
-                    "font_size": [
-                        27
-                    ],
-                    "font_type": [
-                        "regular"
-                    ],
-                    "font_color": [
-                        [
-                            0,
-                            0,
-                            0
-                        ]
-                    ],
-                    "font_align": [
-                        "left"
-                    ],
-                    "font_capitalize": [
-                        "default"
-                    ]
-                }
-            }
+            let fake_json2 = 
+                {"QR_code":{"output":false,"field_info":[["Image","QR_code",null]],"bounding_box":[[660,30,760,130]]},"Portrait":{"output":true,"field_info":[["Image","Portrait",null]],"bounding_box":[[20,165,220,440]]},"ID":{"output":true,"field_info":[["Text","Characters","X_numbers"]],"additional_info":12,"bounding_box":[[330,205,600,240]],"font":["Times New Roman 1"],"font_size":[38],"font_type":["bold"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Name":{"output":true,"field_info":[["Text","Name","Vn"]],"bounding_box":[[240,270,780,305]],"font":["Times New Roman 1"],"font_size":[30],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["upper"]},"Dob":{"output":true,"field_info":[["Text","Time","Full_slash"]],"bounding_box":[[470,310,600,335]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Sex":{"output":true,"field_info":[["Text","Sex","Vn"]],"bounding_box":[[385,340,420,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Nat":{"output":true,"field_info":[["Text","Place","Nationality"]],"bounding_box":[[670,340,780,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Hometown":{"output":true,"field_info":[["Text","Place","Brief"]],"bounding_box":[[470,370,780,395],[240,395,780,420]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Doe":{"output":true,"field_info":[["Text","Time","Full_slash"],["Text","Time","Special"]],"bounding_box":[[130,440,230,460],[60,465,230,485]],"font":["Times New Roman 1"],"font_size":[22],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Address":{"output":true,"field_info":[["Text","Place","Full"]],"bounding_box":[[560,425,780,450],[240,450,780,475]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]}}
+
             let fake_json,is_blink_template
             if(stateDraw.listRect.length==0){
                 fake_json = fake_json2
@@ -497,13 +120,11 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                 "customer_ID": customer_ID,
                 "is_blank_template":is_blink_template,
                 "image_features": fake_json,
-                "image_info": uploadSamples,
-                
+                "image_info": uploadSamples, 
             }
-            console.log('adress: ',`${process.env.REACT_APP_BACKEND_TRAINING}/train`)
-            // await axios.post(`${process.env.REACT_APP_BACKEND_TRAINING}/train`,fake_data)
+            
             // await axios.post("http://10.124.69.195:18001/clear",{customer_ID:"*"})
-            await axios.post("http://10.124.69.195:18001/train",fake_data)
+            await axios.post("http://10.124.69.195:9000/train",fake_data)
                 .then((res)=>{
                     console.log('start_training: ',res.data)
                     setProgressBar(true)
@@ -511,8 +132,11 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,setModeDraw,children
                 .catch((error)=>{
                     console.log('error_training: ',error)
                 })
+            // actionSetLoadingMode(false)
             }
+        
         fetchData()
+        
     }
     return (
         <Col  className={cx("container")}>
