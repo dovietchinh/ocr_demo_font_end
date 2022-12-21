@@ -1,6 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
 import axios from "axios";
-
 const initState = {
     'selectModel': 0,
     'activeImage': null,
