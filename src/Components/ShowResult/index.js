@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { SideBarShowResultConnect,MainShowResultConnect } from '~/connect'
 import styles from './ShowResult.module.scss'
 import mode from '~/myredux/mode'
-import store from '~/myredux'
 let cx = classNames.bind(styles)
 function SideBarSelectModel(){
     let models = useSelector(state=>state.mode.models)
@@ -107,11 +106,10 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
                                 let fileReader = new FileReader()
                                 fileReader.readAsDataURL(files[index])
                                 fileReader.onload = (e) => {
-                                    // actionUploadTestImg(e.target.result)
-                                    store.dispatch(asyncActionInfer(e.target.result))
+                                    actionUploadTestImg(e.target.result)
                                 }
         
-                                }
+                            }
                             e.target.value = ''
                         }}>
 

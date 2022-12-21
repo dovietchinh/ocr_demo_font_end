@@ -8,6 +8,7 @@ import mode from '~/myredux/mode'
 import axios from 'axios'
 import { useEffect } from 'react'
 import store from '~/myredux'
+import { asyncActionInfer } from '~/myredux/testing'
 let cx = classNames.bind(styles)
 function SideBarSelectModel2(){
     let models = useSelector(state=>state.mode.models)
@@ -92,6 +93,7 @@ function SideBarUploadTest({actionUploadTestImg}){
                             fileReader.onload = (e) => {
                                 // actionUploadTestImg(e.target.result)
                                 store.dispatch(asyncActionInfer(e.target.result))
+                                
                                 
                             }
                         }

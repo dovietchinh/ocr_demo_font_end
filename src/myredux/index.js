@@ -69,31 +69,7 @@ const middleWareCheckDone = store => next => action => {
     }
     next(action)
 }
-const asyncActionInfer = createAsyncThunk(
-    'testing/actionUploadTestImg',
-    async (payload,thunkAPI)=>{
-        state = thunkAPI.getState()
-        let test_json = {
-            customer_ID: state.mode.selectedModel,
-            image_info: [payload],
-        }
-        console.log(test_json.customer_ID)
-        let results;
-        const response = await axios.
-            post('http://10.124.64.125:18001/infer',test_json)
-            .then((r)=>{
-                console.log(r.data)
-                let data = r.data.image_result_paths
-                thunkAPI.dispatch(testing.actions.actionSetResultImages(data))
-                results = r.data.image_save_paths
-            })
-            .catch((e)=>{
-                console.log(e)
-                results = payload
-            })
-        return results
-    }
-)    
+
 
 
 
