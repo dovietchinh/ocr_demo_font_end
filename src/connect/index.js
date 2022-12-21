@@ -49,7 +49,9 @@ const mapShowImageProp2Action = {
     'setUploadSamples': training.actions.actionUploadSamples,
     'setModeDraw': training.actions.actionSwitchModeDraw,
     'setProgressBar': training.actions.actionSetProgressBar,
-    'actionSetLoadingMode': mode.actions.actionSetLoadingMode
+    'actionSetLoadingMode': mode.actions.actionSetLoadingMode,
+    'actionSetCurrentTrainingModel': training.actions.actionSetCurrentTrainingModel,
+    'actionSetToastMode': mode.actions.actionSetToastMode,
 }
 const mapTrainingProp2State = (state)=>{
     return {
@@ -83,13 +85,15 @@ const mapSideBarShowResultProp2State = (state)=>{
     return {
         'uploadTestImages':state.testing.uploadTestImages,
         'activeImage': state.testing.activeImage,
-        'customer_ID': state.mode.customer_ID
+        'customer_ID': state.mode.customer_ID,
+        'selectedModel':state.mode.selectedModel,
     }
 }
 const mapSideBarShowResultProp2Action = {
     'actionSetActiveImage': testing.actions.actionSetActiveImage,
     'actionUploadTestImg': testing.actions.actionUploadTestImg,
-    'actionSetResultImages': testing.actions.actionSetResultImages
+    'actionSetResultImages': testing.actions.actionSetResultImages,
+    'actionDeleteTestImages': testing.actions.actionDeleteTestImages
 }
 
 const mapSideBarUploadTestProp2State = (state)=>{
@@ -126,17 +130,21 @@ const mapMainShowResultProp2Action = {
 const mapProgressBarProp2State = (state)=>{
     return{
         'customer_ID': state.mode.customer_ID,
+        'currentTrainingModel': state.training.currentTrainingModel,
         'currentPercent':
         {
             'genPercent': state.training.genPercent,
             'trainingPercent': state.training.trainingPercent,
-        }
+        },
+        'selectedModel': state.mode.selectedModel
     }
 }
 const mapProgressBarProp2Action = {
     'switchMode': mode.actions.switchMode,
     'actionSetCurrentPercent': training.actions.actionSetCurrentPercent,
-    'actionSetLoadingMode': mode.actions.actionSetLoadingMode
+    'actionSetLoadingMode': mode.actions.actionSetLoadingMode,
+    'actionSetToastMode': mode.actions.actionSetToastMode,
+    'actionSetProgressBar': training.actions.actionSetProgressBar,
 }
 
 const mapToastMessageProp2State = (state) => {
@@ -145,6 +153,11 @@ const mapToastMessageProp2State = (state) => {
         'toastMode': state.mode.toastMode,
     }
 }
+
+const mapToastMessageProp2Action = {
+    'actionSetToastMode': mode.actions.actionSetToastMode,
+}
+
 const mapLoadingProp2State = (state) =>{
     return {
         'loadingMode':state.mode.loadingMode
@@ -165,5 +178,5 @@ export const SideBarUploadTestConnect = connect(mapSideBarUploadTestProp2State,m
 export const TestingConnect = connect(mapTestingProp2State,mapTestingProp2Action)(Testing)
 export const MainShowResultConnect = connect(mapMainShowResultProp2State,mapMainShowResultProp2Action)(MainShowResult)
 export const ShowResultConnect = connect(null,null)(ShowResult)
-export const ToastMessageConnect = connect(mapToastMessageProp2State,null)(ToastMessage)
+export const ToastMessageConnect = connect(mapToastMessageProp2State,mapToastMessageProp2Action)(ToastMessage)
 // export const LoadingConnect = connect(mapLoadingProp2State,mapLoadingProp2Action)(Loading)

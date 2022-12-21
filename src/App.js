@@ -6,6 +6,7 @@ import Login from '~/Components/Login'
 import { useSelector } from 'react-redux';
 function App() {
   const modeLoginSuccess = useSelector(state=>state.mode.modeLoginSuccess)
+  const toastMode = useSelector(state=>state.mode.toastMode)
   console.log('modeLoginSuccess: ',modeLoginSuccess)
   
   if(modeLoginSuccess){
@@ -13,12 +14,12 @@ function App() {
       <Router>
       <Routes>
         {
-          ['/Training','/'].map((path_router)=>{
+          ['/Training','/'].map((path_router,index)=>{
             return(
-          <Route path={path_router} element={
+          <Route path={path_router} key={'path_router'+index} element={
             <>
             <HeaderConnect></HeaderConnect>
-            <ToastMessageConnect/>
+            {toastMode && <ToastMessageConnect/>}
             <Loading></Loading>
             <TrainingConnect/>
             </>
@@ -29,7 +30,7 @@ function App() {
         <Route extract path='/Testing' element={
                 <>
                 <HeaderConnect></HeaderConnect>
-                <ToastMessageConnect/>
+                {toastMode &&<ToastMessageConnect/>}
                 <Loading></Loading>
                 <TestingConnect/>
                 </>

@@ -280,3 +280,62 @@
 .tool-items--active {
     background-color: #0052CC;
 }
+
+.Modal{
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 1920px;
+    height: 1100px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index:200;
+    background-color: rgba(0,0,0,0.5);
+    .Modal__content{
+        height: 200px;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        justify-items: stretch;
+        align-items: stretch;
+        transform: translateY(-100px);
+        border-radius: 10px;
+    }
+}
+.Modal__title{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    span{
+        font-size: 18px;
+        text-align: center;
+    }
+    border-bottom: solid 1px gray;
+}
+.Modal__body{
+    height: 80px;
+    display: flex;
+    padding-left: 20px;
+    align-items: center;
+    border-bottom: solid 1px gray;
+    
+    input{
+        height: 27px;
+        border-radius: 5px;
+        border:  #F4F5F8 solid;
+        outline: none;
+        background-color: #F4F5F8;
+        
+    }
+}
+.Modal__footer{
+    height: 60px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+    padding-right: 20px;
+}

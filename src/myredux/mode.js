@@ -4,19 +4,21 @@ import testing from "./testing";
 
 const initState = {
     'mode':'training',
-    'customer_ID': '1',
-    'toastText': "asd",
+    'customer_ID': "",
+    'toastText': "",
     'toastMode': false,
     'loadingMode': false,
     'login': false,
     'modeLoginSuccess':false,
+    'models':['Chip','thẻ_tạm_trú'],
+    'selectedModel': "Chip",
 }
 
 export const login = createAsyncThunk(
     'mode/actionSetLoadingMode',
     async (userId, thunkAPI)=>{
         console.log(userId)
-        const r = await axios.get('http://10.124.69.195:18000/api/v1/count')
+        const r = await axios.get('http://10.124.64.125:18000/api/v1/count')
         return r.data
     }
 )
@@ -31,21 +33,17 @@ const mode = createSlice({
             }
             else{
                 state.mode = action.payload
-                // if(action.payload=='training'){
-                //     // state.toastText='training'
-                //     // state.toastMode = true
-                //     // state.loadingMode = true
-                //     // setTimeout(()=>{state.toastMode = false},5000)
-                //     state.customer_ID = Math.floor(Math.random() * 1000)
-                // }
-                // else{
-                //     // state.toastText='testing'
-                //     // state.toastMode = false
-                //     // state.loadingMode = false
-                //     state.customer_ID = 0
-
-                // }
             }
+        },
+        actionSetToastMode(state,action){
+            state.toastMode = action.payload.toastMode
+            state.toastText = action.payload.toastText
+        },
+        actionSetModels(state,action){
+            state.models = action.payload
+        },
+        actionSetSelectedModel(state,action){
+            state.selectedModel = action.payload
         },
         actionSetModeLoading(state,action){
             state.loadingMode = action.payload

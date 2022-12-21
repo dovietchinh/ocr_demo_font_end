@@ -2,11 +2,10 @@ import {createSlice} from "@reduxjs/toolkit"
 import axios from "axios";
 
 const initState = {
-    'is_training': false,
+    'trainingFlag': false,
     'genPercent': null,
     'trainingPercent': null,
     'progress': 0,
-    'training_id':[],
     'uploadSamples': [],
     'modeDraw': false,
     'progressBar':false,
@@ -15,7 +14,8 @@ const initState = {
         'startpoint': null,
         'listRect': [],
         'listLabel': [],
-    }
+    },
+    'currentTrainingModel': "",
 }
 
 
@@ -41,15 +41,11 @@ const training = createSlice({
                 }
             }
         },
-        actionStartTraining(state,action){
-            // axios.post('http://127.0.0.1:9000:/api/v1/start_training')
-            state.is_training = true
-            state.training_id.push(action.payload)
+        actionSetTrainingFlag(state,action){
+            state.trainingFlag = action.payload
         },
-        actionStopTraining(state,action){
-            // axios.post('http://127.0.0.1:9000:/api/v1/start_training')
-            state.is_training = false
-            state.training_id = null
+        actionSetCurrentTrainingModel(state,action){
+            state.currentTrainingModel = action.payload
         },
         actionSetCurrentPercent(state,action){
             state.genPercent = action.payload.genPercent

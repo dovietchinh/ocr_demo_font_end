@@ -14,7 +14,7 @@ function Login(){
     let dispatch = useDispatch()
     const handleClick = (e)=>{
         let login_submit = async () =>{
-            let res = await axios.post('http://10.124.69.195:18001/api/v1/login',{user,pass})
+            let res = await axios.post('http://10.124.64.125:18001/api/v1/login',{user,pass})
                 .then((r)=>{
                     console.log(r.data.message)
                     if(r.data.status){
@@ -30,12 +30,14 @@ function Login(){
                 })
                 .then({})
                 .catch((error)=>{
-                    if(typeof(error)=='string') return {message:error}
-
-                    return{message:'server error'}
+                    let r;
+                    if(typeof(error)=='string') {r = {message:error}}
+                    else{r = {message:'server error'}}
+                    
+                    setMessage(r.message)
                 })
                 
-            setMessage(res.message)
+            
             
         }
         login_submit()

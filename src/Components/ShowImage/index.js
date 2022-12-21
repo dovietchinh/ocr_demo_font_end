@@ -13,10 +13,12 @@ import axios from 'axios'
 let cx = classNames.bind(styles)
 function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     setModeDraw,children,setProgressBar,
-                    customer_ID,stateDraw,actionSetLoadingMode}){
+                    customer_ID,stateDraw,actionSetLoadingMode,
+                    actionSetCurrentTrainingModel,actionSetToastMode}){
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
-    // const [modeDraw,setModeDraw] = useState(false)
+    const [text,setText] = useState("")
+    const [showModal,setShowModal] = useState("none")
 
     const handleClickNewImg = (e)=>{
         let myinput = document.getElementById("browse-file2")
@@ -36,6 +38,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
         }
     }
     const handleClickTraining = (e) => {
+        actionSetCurrentTrainingModel(customer_ID+"_"+text)
         let fetchData = async ()=>{
             // actionSetLoadingMode(true)
             let fake_json1 = {}
@@ -97,15 +100,15 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     xbr = parseInt(xbr)
                     ybr = parseInt(ybr)
                     let new_bbox = [xtl,ytl,xbr,ybr]
-                    new_bbox = [547,
-                        34,
-                        636,
-                        124]
+                    // new_bbox = [547,
+                    //     34,
+                    //     636,
+                    //     124]
                     fake_json1[stateDraw.listLabel[i]].bounding_box.push(new_bbox)
                 }
                 }
-            let fake_json2 = 
-                {"QR_code":{"output":false,"field_info":[["Image","QR_code",null]],"bounding_box":[[660,30,760,130]]},"Portrait":{"output":true,"field_info":[["Image","Portrait",null]],"bounding_box":[[20,165,220,440]]},"ID":{"output":true,"field_info":[["Text","Characters","X_numbers"]],"additional_info":12,"bounding_box":[[330,205,600,240]],"font":["Times New Roman 1"],"font_size":[38],"font_type":["bold"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Name":{"output":true,"field_info":[["Text","Name","Vn"]],"bounding_box":[[240,270,780,305]],"font":["Times New Roman 1"],"font_size":[30],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["upper"]},"Dob":{"output":true,"field_info":[["Text","Time","Full_slash"]],"bounding_box":[[470,310,600,335]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Sex":{"output":true,"field_info":[["Text","Sex","Vn"]],"bounding_box":[[385,340,420,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Nat":{"output":true,"field_info":[["Text","Place","Nationality"]],"bounding_box":[[670,340,780,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Hometown":{"output":true,"field_info":[["Text","Place","Brief"]],"bounding_box":[[470,370,780,395],[240,395,780,420]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Doe":{"output":true,"field_info":[["Text","Time","Full_slash"],["Text","Time","Special"]],"bounding_box":[[130,440,230,460],[60,465,230,485]],"font":["Times New Roman 1"],"font_size":[22],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Address":{"output":true,"field_info":[["Text","Place","Full"]],"bounding_box":[[560,425,780,450],[240,450,780,475]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]}}
+            let fake_json2 = {"QR_code":{"output":false,"field_info":[["Image","QR_code",null]],"bounding_box":[[660,30,760,130]]},"Portrait":{"output":true,"field_info":[["Image","Portrait",null]],"bounding_box":[[20,165,220,440]]},"ID":{"output":true,"field_info":[["Text","Characters","X_numbers"]],"additional_info":12,"bounding_box":[[330,205,600,240]],"font":["Times New Roman 1"],"font_size":[38],"font_type":["bold"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Name":{"output":true,"field_info":[["Text","Name","Vn"]],"bounding_box":[[240,270,780,305]],"font":["Times New Roman 1"],"font_size":[30],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["upper"]},"Dob":{"output":true,"field_info":[["Text","Time","Full_slash"]],"bounding_box":[[470,310,600,335]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Sex":{"output":true,"field_info":[["Text","Sex","Vn"]],"bounding_box":[[385,340,420,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Nat":{"output":true,"field_info":[["Text","Place","Nationality"]],"bounding_box":[[670,340,780,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Hometown":{"output":true,"field_info":[["Text","Place","Brief"]],"bounding_box":[[470,370,780,395],[240,395,780,420]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Doe":{"output":true,"field_info":[["Text","Time","Full_slash"],["Text","Time","Special"]],"bounding_box":[[130,440,230,460],[60,465,230,485]],"font":["Times New Roman 1"],"font_size":[22],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Address":{"output":true,"field_info":[["Text","Place","Full"]],"bounding_box":[[560,425,780,450],[240,450,780,475]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]}}
+                
 
             let fake_json,is_blink_template
             if(stateDraw.listRect.length==0){
@@ -117,16 +120,23 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                 is_blink_template = false
             }
             let fake_data = {
-                "customer_ID": customer_ID,
+                "customer_ID": customer_ID+"_"+text,
                 "is_blank_template":is_blink_template,
                 "image_features": fake_json,
                 "image_info": uploadSamples, 
             }
             
-            // await axios.post("http://10.124.69.195:18001/clear",{customer_ID:"*"})
-            await axios.post("http://10.124.69.195:18001/train",fake_data)
+            
+            await axios.post("http://10.124.64.125:18001/train",fake_data)
                 .then((res)=>{
                     console.log('start_training: ',res.data)
+                    if(res.data.status==false){
+                        // actionSetToastMode({
+                            // toastText: res.data.message,
+                            // testMode: true,
+                        // })
+                        actionSetToastMode({toastText:res.data.message, toastMode:true})
+                    }
                     setProgressBar(true)
                 })
                 .catch((error)=>{
@@ -139,6 +149,24 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
         
     }
     return (
+        <>
+        <div className={cx("Modal")} style={{display:showModal}}>
+            <div className={cx("Modal__content")}>
+                <div className={cx("Modal__title")}><span>Model Name</span></div>
+                <div className={cx("Modal__body")}>
+                    <input type='text'
+                            value={text}
+                            onChange={e=>setText(e.target.value)}
+                            placeholder="what is your model name?"
+                    ></input>
+                </div>
+                <div className={cx("Modal__footer")}>
+                    <Button variant='secondary' onClick={e=>setShowModal("none")}>Close</Button>
+                    <Button variant='primary' onClick={handleClickTraining}>Next</Button>
+                </div>
+            </div>
+        </div>
+        
         <Col  className={cx("container")}>
             <div className={cx("upload-image")}>
                 <title className={cx("title")}>
@@ -223,9 +251,12 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                 </div>
             </div>
             <Row>
-                <Button variant="primary" className={cx("btn-action")} onClick={handleClickTraining}>Training</Button>
+                <Button variant="primary" className={cx("btn-action")} onClick={e=>setShowModal("")}>Training</Button>
             </Row>
         </Col>
+        </>
     )
 }
+
+
 export default ShowImage

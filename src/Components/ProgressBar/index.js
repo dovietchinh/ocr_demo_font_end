@@ -63,13 +63,13 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
         </div>
     )
 }
-function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer_ID,actionSetLoadingMode}){
+function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentTrainingModel,actionSetLoadingMode,selectedModel,actionSetToastMode,actionSetProgressBar,customer_ID}){
     const handleClick = (e)=>{
         
         let convertAPI = async ()=>{
             actionSetLoadingMode(true)
             console.log('start Convert!')
-            await axios.post('http://10.124.69.195:18002/convert',{customer_ID})
+            await axios.post('http://10.124.64.125:18002/convert',{customer_ID:selectedModel})
                 .then((r)=>{
                     console.log('convert done')
                     console.log(r.data)
@@ -77,7 +77,7 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer
                 .catch((error)=>{
                     console.log('error convert: ',error)
                 })
-            await axios.post('http://10.124.69.195:18002/reload_models',{customer_ID})
+            await axios.post('http://10.124.64.125:18002/reload_models',{customer_ID:selectedModel})
                 .then((r)=>{
                     console.log('reload models done!')
                 })
@@ -91,16 +91,17 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer
      
     }
     const handleClickCancel = (e)=>{
-        
-        let fetchData = async ()=>{
-            await axios.post('http://10.124.69.195:18001/reload')
-
+        if (parseInt(currentPercent.trainingPercent)!=1){
+            actionSetToastMode({toastText:"can not stop training progress, please wait", toastMode:true})
+        }
+        else{
+            actionSetProgressBar(false)
         }
         
     }
     useEffect(()=>{
         let fetchData = async ()=>{
-            await axios.post("http://10.124.69.195:18001/progress",{customer_ID:String(customer_ID)})
+            await axios.post("http://10.124.64.125:18001/progress",{customer_ID:currentTrainingModel})
             // await axios.get(`${process.env.REACT_APP_BACKEND_TRAINING}/progress`)
             
                 .then((res)=>{
@@ -155,8 +156,12 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,customer
                     <ProgressCircle from_percentage={0} percentage={currentPercent.genPercent} cls={cx("progress-circle--1")}>Initializing</ProgressCircle>
                     <ProgressCircle from_percentage={currentPercent.trainingPercent} percentage={currentPercent.trainingPercent}  cls={cx("progress-circle--2")}>Training</ProgressCircle>
                 </div>
+                <div className={cx("modelname--display")}>
+                    <span className={cx("modename")}>{currentTrainingModel.replace(`${customer_ID}_`,"")}</span>
+                    <span> is being trained</span>
+                </div>
                 <div className={cx("actions")}>
-                    <Button variant='secondary' onClick={handleClickCancel}>Cancel</Button>
+                    <Button variant='secondary' onClick={handleClickCancel} >Cancel</Button>
                     <Link to="/Testing"><Button variant="primary" onClick={handleClick}>Start test</Button></Link>
                 </div>
             </div>

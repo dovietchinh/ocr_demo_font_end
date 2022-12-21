@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 const { Col,ToggleButton,Navbar,Button } = require("react-bootstrap");
 
-function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_ID,setCustomerID,actionSetModeLoginSuccess}){
+function Header({mode,switchMode,clearMode,clearTesting,clearTraining,setCustomerID,actionSetModeLoginSuccess}){
     return (
         <Navbar bg="primary" className='NavBar--Header'>
             <Col></Col>
@@ -46,13 +46,6 @@ function Header({mode,switchMode,clearMode,clearTesting,clearTraining,customer_I
             }}
             >Clear
             </Button>
-            {/* <input type='text' 
-                className="input_ID"
-                // placeholder='ID' 
-                value={customer_ID} 
-                onChange={e=>setCustomerID(e.target.value)}
-                
-                /> */}
             <Col></Col>
             <Button variant="primary" 
                     className='logout-btn'

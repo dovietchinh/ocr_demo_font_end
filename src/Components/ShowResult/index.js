@@ -1,10 +1,63 @@
 import axios from 'axios'
 import classNames from 'classnames/bind'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { SideBarShowResultConnect,MainShowResultConnect } from '~/connect'
 import styles from './ShowResult.module.scss'
+import mode from '~/myredux/mode'
 let cx = classNames.bind(styles)
-function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,customer_ID}){
+function SideBarSelectModel(){
+    let models = useSelector(state=>state.mode.models)
+    console.log('models: ',models)
+    let selectedModel = useSelector(state=>state.mode.selectedModel)
+    let customer_ID = useSelector(state=>state.mode.customer_ID)
+    let currentTrainingModel = useSelector(state=>state.training.currentTrainingModel)
+    let trainingFlag = useSelector(state=>state.training.trainingFlag)
+    console.log('selectedModel: ',selectedModel)
+    
+    const dispatch = useDispatch ()
+
+    useEffect(()=>{
+        let fetchData = async()=>{
+            await axios.post('http://10.124.64.125:18001/api/v1/get_models_user',{customer_ID})
+                .then((r)=>{
+                    dispatch(mode.actions.actionSetModels(r.data.listModels))
+                })
+                .catch(console.log('error in get models user'))
+        }
+        fetchData()
+    },[])
+    return (
+        <div className={cx("select")}>
+            <small className={cx('label')}>SELECT MODEL</small>
+            <div className={cx("select__field")}>
+                <select className={cx("select__input")} onChange={(e)=>{
+                        console.log('value: ',e.target.value)
+                        dispatch(mode.actions.actionSetSelectedModel(e.target.value))
+                    }}>
+                    {/* <option value="audi">Audi</option> */}
+                    {
+                        models.map((ele,index)=>{
+                            let select = ""
+                            if(ele==selectedModel) select="selected"
+                            let text_display = ele.replaceAll("_"," ").replace(customer_ID,"")
+                            console.log('currentTrainingModel: ',currentTrainingModel)
+                            let disabled = false
+                            if(ele==currentTrainingModel & trainingFlag==true) {
+                                text_display += "     (training...)"
+                                disabled = true
+                            }
+                            return(
+                                <option ket={index} selected={select}  disabled={disabled} value={ele}>{text_display}</option>
+                            )
+                        })
+                    }
+                </select>
+            </div>
+        </div>
+    )
+}
+function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,actionSetActiveImage,actionSetResultImages,customer_ID,actionDeleteTestImages,selectedModel}){
     
     const handleClick = (e)=>{
         let myinput = document.getElementById("browse-file-show-test")
@@ -15,17 +68,18 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
 
         const fetchData = async () => {
             let test_json = {
-                customer_ID: customer_ID,
+                customer_ID: selectedModel,
                 image_info: [uploadTestImages.at(-1)],
             }
             console.log(test_json.customer_ID)
             const response = await axios.
-                                post('http://10.124.69.195:18001/infer',test_json)
+                                post('http://10.124.64.125:18001/infer',test_json)
                                 // get('http://127.0.0.1:9000/api/v1/test_img')
                                 .then((r)=>{
                                     console.log(r.data)
-                                    let data = r.data.images
-                                    data = data.map((x)=>{return "data:image/png;base64,"+x})
+                                    let data = r.data.image_result_paths
+                                    // data = data.map((x)=>{return "data:image/png;base64,"+x})
+                                    // data = data.map((x)=>)
                                     actionSetResultImages(data)
                                 })
                                 .catch((e)=>{
@@ -76,9 +130,7 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
                                 className={cx("sidebar__default-thumbnail",cls)}
                                 onKeyDown={(e)=>{
                                     if(e.key=='Delete'){
-                                        let new_uploadTestImages = [...uploadTestImages]
-                                        new_uploadTestImages.splice(activeImage,1)
-                                        actionUploadTestImg(new_uploadTestImages)
+                                        actionDeleteTestImages(activeImage)
                                     }
                                 }}
                                 tabIndex="-1"
@@ -95,9 +147,6 @@ function SideBarShowResult({uploadTestImages,actionUploadTestImg,activeImage,act
 function MainShowResult({activeImage,resultImages,viewIndex,actionSetViewIndex}){
     let check = useRef(false)
     const [imageViews,setImageView] = useState([])
-    // console.log('resultImages:',resultImages)
-    // console.log('activeImage:', activeImage)
-    // console.log('resultImages[activeImage]: ',typeof(resultImages[activeImage]))
     useEffect(()=>{
         
         if(resultImages[activeImage]==null & typeof(resultImages[activeImage])=='undefined'){
@@ -153,6 +202,7 @@ function ShowResult(){
                 <MainShowResultConnect></MainShowResultConnect>
             </div>
             <div className={cx("sidebar")}>
+                <SideBarSelectModel/>
                 <SideBarShowResultConnect/>
             </div>
         </div>
