@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import autoMergeLevel1 from 'redux-persist/es/stateReconciler/autoMergeLevel1';
 import axios from 'axios';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
-const { configureStore } = require("@reduxjs/toolkit");
+const { configureStore, createAsyncThunk } = require("@reduxjs/toolkit");
 const { combineReducers } = require("redux");
 
 const middleWareLogin = store => next => action =>{
@@ -69,7 +69,9 @@ const middleWareCheckDone = store => next => action => {
     }
     next(action)
 }
-    
+
+
+
 
 const reducers = combineReducers({
     training: training.reducer,
