@@ -68,7 +68,7 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentT
         
         let convertAPI = async ()=>{
             actionSetLoadingMode(true)
-            console.log('start Convert!')
+            
             await axios.post('http://10.124.64.125:18002/convert',{customer_ID:selectedModel})
                 .then((r)=>{
                     console.log('convert done')
@@ -123,7 +123,7 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentT
                         },
                         'message': 'processing', 'status': true
                     }
-                    // console.log(res.data)
+                    
                     let gen_ = res.data.data.generation_progress.Card_Detection
                              + res.data.data.generation_progress.Corner_Detection
                              + res.data.data.generation_progress.Field_Detection
@@ -142,13 +142,10 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentT
                 })
         } 
         const interval = setInterval(()=>{fetchData()},3000)
-        console.log('fetch')
+        
         return ()=>clearInterval(interval)
     },[])
 
-    console.log('currentPercent:' ,currentPercent)
-    console.log('currentPercent.genPercent: ',currentPercent.genPercent)
-    console.log('currentPercent.trainingPercent: ',currentPercent.trainingPercent)
     return (
         <Container >
             <div className={cx("container")}>

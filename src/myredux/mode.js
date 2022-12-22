@@ -17,7 +17,6 @@ const initState = {
 export const login = createAsyncThunk(
     'mode/actionSetLoadingMode',
     async (userId, thunkAPI)=>{
-        console.log(userId)
         const r = await axios.get('http://10.124.64.125:18000/api/v1/count')
         return r.data
     }

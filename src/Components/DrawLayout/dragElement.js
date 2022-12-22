@@ -1,7 +1,4 @@
 function dragElement(elmnt,elemnt2) {
-    console.log(elmnt)
-    console.log(elemnt2)
-    console.log(elmnt.getAttribute("myattribute"))
     if(elmnt==null | typeof(elmnt)=='undefined'){
         return
     }
@@ -11,7 +8,6 @@ function dragElement(elmnt,elemnt2) {
     // else{
     //     elmnt.setAttribute("myattribute","true")
     // }
-    console.log('here')
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     document.onmousedown = dragMouseDown;
     function dragMouseDown(e) {

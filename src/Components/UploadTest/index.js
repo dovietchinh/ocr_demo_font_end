@@ -12,12 +12,10 @@ import { asyncActionInfer } from '~/myredux/testing'
 let cx = classNames.bind(styles)
 function SideBarSelectModel2(){
     let models = useSelector(state=>state.mode.models)
-    console.log('models: ',models)
     let selectedModel = useSelector(state=>state.mode.selectedModel)
     let customer_ID = useSelector(state=>state.mode.customer_ID)
     let currentTrainingModel = useSelector(state=>state.training.currentTrainingModel)
     let trainingFlag = useSelector(state=>state.training.trainingFlag)
-    console.log('selectedModel: ',selectedModel)
     const dispatch = useDispatch ()
     useEffect(()=>{
         let fetchData = async()=>{
@@ -25,7 +23,7 @@ function SideBarSelectModel2(){
                 .then((r)=>{
                     dispatch(mode.actions.actionSetModels(r.data.listModels))
                 })
-                .catch(console.log('error in get models user'))
+                // .catch(console.log('error in get models user'))
         }
         fetchData()
     },[])
@@ -33,11 +31,11 @@ function SideBarSelectModel2(){
         <div className={cx("select")}>
             <small className={cx('label')}>SELECT MODEL</small>
             <div className={cx("select__field")}>
-                <select className={cx("select__input")} onChange={(e)=>{
-
-                        console.log('value: ',e.target.value)
-                        dispatch(mode.actions.actionSetSelectedModel(e.target.value))
-                    }}>
+                <select className={cx("select__input")} 
+                        defaultValue={selectedModel}
+                        onChange={(e)=>{
+                            dispatch(mode.actions.actionSetSelectedModel(e.target.value))
+                        }}>
                     {/* <option value="audi">Audi</option> */}
                     {
                         models.map((ele,index)=>{
@@ -50,7 +48,7 @@ function SideBarSelectModel2(){
                                 disabled=true
                             }
                             return(
-                                <option ket={index} selected={select}  disabled={disabled} value={ele}>{text_display}</option>
+                                <option key={index}   disabled={disabled} value={ele}>{text_display}</option>
                             )
                         })
                     }

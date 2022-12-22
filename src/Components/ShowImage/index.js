@@ -15,6 +15,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     setModeDraw,children,setProgressBar,
                     customer_ID,stateDraw,actionSetLoadingMode,
                     actionSetCurrentTrainingModel,actionSetToastMode}){
+    const [listLabels,setListLabels] = useState(["asdasd",'asdkgasd'])
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     const [text,setText] = useState("")
@@ -31,7 +32,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
         // let fileReader = new FileReader()
         for(let index=0; index< length;index++){
             let fileReader = new FileReader()
-            await fileReader.readAsDataURL(files[index])
+            fileReader.readAsDataURL(files[index])
             fileReader.onload = async (e)=>{
                await setUploadSamples(e.target.result)
             }
@@ -83,13 +84,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
 
                 
                 for(let i=0;i<stateDraw.listRect.length;i++){
-                    console.log('stateDraw.listRect: ',i," :" ,stateDraw.listRect[i])
                     let bbox = stateDraw.listRect[i]
-                    console.log('bbox: ',typeof(bbox))
-                    console.log('bbox_0: ',stateDraw.listRect[i][0])
-                    console.log('bbox_1: ',stateDraw.listRect[i][1])
-                    console.log('bbox0: ',bbox[0])
-                    console.log('bbox1: ',bbox[1])
+
                     
                     let xtl = Math.min(bbox[0][0],bbox[1][0])
                     let ytl = Math.min(bbox[0][1],bbox[1][1])
@@ -129,12 +125,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
             
             await axios.post("http://10.124.64.125:18001/train",fake_data)
                 .then((res)=>{
-                    console.log('start_training: ',res.data)
                     if(res.data.status==false){
-                        // actionSetToastMode({
-                            // toastText: res.data.message,
-                            // testMode: true,
-                        // })
                         actionSetToastMode({toastText:res.data.message, toastMode:true})
                     }
                     setProgressBar(true)
@@ -167,7 +158,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
             </div>
         </div>
         
-        <Col  className={cx("container")}>
+        <div className={cx("temp")}>
+        <div  className={cx("container")}>
             <div className={cx("upload-image")}>
                 <title className={cx("title")}>
                     <span className={cx("title-1")}>UPLOAD IMAGE</span>
@@ -238,7 +230,6 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                 <div className={cx("tool")}>
                     <div className={cx("tool-items")} onClick={(e)=>{
                         setModeDraw(!modeDraw)
-                        console.log(modeDraw)
                         let modifyClass = "tool-items--active"
                         if(modeDraw) modifyClass = "tool-items--deactive"
                         e.target.className = cx("tool-items",modifyClass)
@@ -250,10 +241,31 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     </div>
                 </div>
             </div>
-            <Row>
+            <div>
                 <Button variant="primary" className={cx("btn-action")} onClick={e=>setShowModal("")}>Training</Button>
-            </Row>
-        </Col>
+            </div>
+            
+            
+        </div>
+        <div className={cx("sidebar")}>
+            <div className={cx("sidebar__content")}>
+                <div className={cx("sidebar__title")}></div>
+                <div className={cx("sidebar__labels")}>
+                    {
+                        listLabels.map((ele,index)=>{
+                            return(
+                                <div className={cx("sidebar__labels__items")}
+                                key={"sidebar__labels__items_"+index}
+                                >
+                                    <span>{ele}</span>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </div>
+        </div>
+        </div>
         </>
     )
 }

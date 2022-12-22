@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit"
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import axios from "axios";
 const initState = {
     'selectModel': 0,
@@ -6,28 +6,38 @@ const initState = {
     'viewIndex':null,
     'uploadTestImages': [],
     'resultImages': [],
+    'resultFeatures': [],
 }
 const asyncActionInfer = createAsyncThunk(
     'testing/asyncActionInfer',
     async (payload,thunkAPI)=>{
-        state = thunkAPI.getState()
+        let state = thunkAPI.getState()
         let test_json = {
             customer_ID: state.mode.selectedModel,
             image_info: [payload],
         }
-        console.log(test_json.customer_ID)
         let results;
         const response = await axios.
             post('http://10.124.64.125:18001/infer',test_json)
             .then((r)=>{
                 console.log(r.data)
-                let data = r.data.image_result_paths
-                thunkAPI.dispatch(testing.actions.actionSetResultImages(data))
-                results = r.data.image_save_paths
+                results = {
+                    origin:r.data.original_image_path,
+                    result: r.data.image_result_paths,
+                    feature: r.data.features
+                }
+                console.log(r.data.features)
+                console.log(r.data.features[0])
+                console.log(r.data.features[0].Adress)
+                console.log(r.data.features[0].Dob)
             })
             .catch((e)=>{
                 console.log(e)
-                results = payload
+                results = {
+                    origin:payload,
+                    result: [],
+                    feature: [],
+                }
             })
         return results
     }
@@ -48,9 +58,9 @@ const testing = createSlice({
             state.activeImage = action.payload
         },
         actionSetResultImages(state,action){
-            if(state.resultImages.length < state.uploadTestImages.length){
-                state.resultImages.push(action.payload)
-            }
+            // if(state.resultImages.length < state.uploadTestImages.length){
+            state.resultImages.push(action.payload)
+            // }
         },
         actionSetViewIndex(state,action){
             state.viewIndex = action.payload
@@ -62,13 +72,24 @@ const testing = createSlice({
                 'viewIndex':null,
                 'uploadTestImages': [],
                 'resultImages': [],
+                'resultFeatures': [],
             }
         }
     },
     extraReducers:(builder)=>{
+        builder.addCase(asyncActionInfer.pending,(state,action)=>{
+            // state.uploadTestImages.push(action.payload.origin)
+            // state.resultImages.push(action.payload.result)
+            // state.resultFeatures.push(action.payload.feature)
+            // state.activeImage = state.uploadTestImages.length - 1
+            // alert('infer start')
+        })
         builder.addCase(asyncActionInfer.fulfilled,(state,action)=>{
-            state.uploadTestImages.push(action.payload)
+            state.uploadTestImages.push(action.payload.origin)
+            state.resultImages.push(action.payload.result)
+            state.resultFeatures.push(action.payload.feature)
             state.activeImage = state.uploadTestImages.length - 1
+            // alert('infer done!')
         })
     }
 });

@@ -52,7 +52,6 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
         }
     }
     const handleKeyUp = useCallback((e)=>{
-        console.log('keyup: ',e.key)
         if(e.key=='n'){
             setStateDraw((prev)=>{
                 return{
@@ -152,7 +151,6 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                                     tabIndex="1"
                                     style={{"zIndex": index+100}}
                                     onMouseDown={(e)=>{
-                                        console.log('focus: ',index)
                                         let temp = document.getElementById(`foreingnObject_${index}`)                      
                                         dragElement(e.target,temp)
                                     }}

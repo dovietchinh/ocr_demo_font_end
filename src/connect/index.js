@@ -85,14 +85,10 @@ const mapSideBarShowResultProp2State = (state)=>{
     return {
         'uploadTestImages':state.testing.uploadTestImages,
         'activeImage': state.testing.activeImage,
-        'customer_ID': state.mode.customer_ID,
-        'selectedModel':state.mode.selectedModel,
     }
 }
 const mapSideBarShowResultProp2Action = {
     'actionSetActiveImage': testing.actions.actionSetActiveImage,
-    'actionUploadTestImg': testing.actions.actionUploadTestImg,
-    'actionSetResultImages': testing.actions.actionSetResultImages,
     'actionDeleteTestImages': testing.actions.actionDeleteTestImages
 }
 
@@ -120,7 +116,7 @@ const mapMainShowResultProp2State = (state)=>{
         'activeImage':state.testing.activeImage,
         'resultImages':state.testing.resultImages,
         'viewIndex':state.testing.viewIndex,
-        // '':resultImages[activeImage]
+        'resultFeatures': state.testing.resultFeatures
     }
 }
 const mapMainShowResultProp2Action = {
@@ -150,7 +146,6 @@ const mapProgressBarProp2Action = {
 const mapToastMessageProp2State = (state) => {
     return{
         'toastText':state.mode.toastText,
-        'toastMode': state.mode.toastMode,
     }
 }
 

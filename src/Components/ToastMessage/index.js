@@ -10,7 +10,6 @@ function ToastMessage({toastText,actionSetToastMode}){
         const interval = setTimeout(()=>{
             actionSetToastMode({toastText:"",toastMode:false})
         },5000)
-        console.log('fetch')
     },[])
     return(
         <ToastContainer className={"p-3 "+cx("toast-container")} position="left-start">
