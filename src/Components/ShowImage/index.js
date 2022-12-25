@@ -11,13 +11,28 @@ import plus_icon from '~/assets/images/plus.png'
 import { useState,useRef, useEffect, Children } from 'react'
 import axios from 'axios'
 
+
+
+
+
+const COLOR = ["#FF177B","#6E58FA","#43D2E0",
+                "#30B82D","#E958D0",
+                '#FF4500',"#9932CC","#FF8C00",
+                "#FFA07A","#40E0D0","#F4A460",
+                "#32CD32","#708090","#7FFFD4",
+                "#FFFF00","#9ACD32","#EE82EE",
+                "#D2B48C"]
+
+
+
+
 let cx = classNames.bind(styles)
 function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     setModeDraw,children,setProgressBar,
                     customer_ID,stateDraw,actionSetLoadingMode,
                     actionSetCurrentTrainingModel,actionSetToastMode,
                     actionRemoveUploadSample}){
-    const [listLabels,setListLabels] = useState(["asdasd",'asdkgasd'])
+    const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     const [text,setText] = useState("")
@@ -213,7 +228,6 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                             setActiveIndex(index)
                                         }}
                                         onKeyDown={(e)=>{
-                                            console.log(e.key)
                                             if(e.key=='Delete')
                                             {   
                                                 if(index==uploadSamples.length-1){setActiveIndex(index-1)}
@@ -250,7 +264,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     <div className={cx("tool-items")}>
                         <img src={tool_item_2}></img>
                     </div>
-                    <div className={cx("tool-items")}>
+                    <div className={cx("tool-items")} onClick={(e)=>{
+                        if(activeIndex==uploadSamples.length-1){setActiveIndex(activeIndex-1)}
+                        actionRemoveUploadSample(activeIndex)
+                    }}>
                         <img src={trash} ></img>
                     </div>
                 </div>
@@ -265,7 +282,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
             <div className={cx("sidebar__content")}>
                 <div className={cx("sidebar__title")}>
                     <span className={cx("sidebar__title__span")}>LABELS</span>
-                    <div className={cx("sidebar__title__plus")}>
+                    <div className={cx("sidebar__title__plus")} 
+                        onClick={(e)=>{
+                            setListLabels(prev=>[...prev,''])
+                        }}>
                         <img src={plus_icon}/>
                     </div>
                 </div>
@@ -275,9 +295,40 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                             return(
                                 <div className={cx("sidebar__labels__items")}
                                 key={"sidebar__labels__items_"+index}
-                                >
-                                    <span>{ele}</span>
-                                    <div className={cx("sidebar__labels__items__circle")}>
+                                onMouseOver={(e)=>{
+                                    let x = e.target.querySelector("div")
+                                    if(x!=null){x.style.display="block"}
+                                }}
+                                onMouseLeave={(e)=>{
+                                    let x = e.target.querySelector("div")
+                                    if(x!=null){x.style.display="none"}
+                                }}
+                                style={{backgroundColor:COLOR[index]}}
+                                >   
+                                    <div className={cx("delete")} onClick={(e)=>{
+                                        setListLabels((prev)=>{
+                                            let new_list = [...prev]
+                                            new_list.splice(index,1)
+                                            return new_list
+                                        })
+                                    }}>
+                                        <img src={trash}></img>
+                                    </div>
+                                    <span className={cx("sidebar__labels__items__number")}>{index}</span>
+                                    <input className={cx("sidebar__labels__items__text")}
+                                            value={ele}
+                                            onChange={(e)=>{
+                                                setListLabels(prev=>{
+                                                    let a = [...prev]
+                                                    a[index] = e.target.value
+                                                    return a
+                                                })
+                                            }}
+                                            ></input>
+                                    <div className={cx("sidebar__labels__items__circle")} 
+                                        onClick={(e)=>{
+                                            setListLabels(prev=>[...prev,''])
+                                        }}>
                                         <img src={plus_icon}/>
                                     </div>
 
