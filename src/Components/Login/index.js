@@ -1,6 +1,6 @@
 import axios from 'axios'
 import classNames from 'classnames/bind'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import styles from './Login.module.scss'
@@ -42,18 +42,33 @@ function Login(){
         }
         login_submit()
     }
+    const ref = useRef()
+    const refBtn = useRef()
+    useEffect(()=>{
+        ref.current.focus()
+        // document.addEventListener('')
+        let myEvent = (e)=>{
+            if(e.key=='Enter'){
+                refBtn.current.click()
+            }
+        }
+        document.addEventListener('keydown',myEvent)
+        return ()=>{document.removeEventListener('keydown',myEvent)}
+    },[])
     return(
         <div className={cx("container")}>
-            <form className={cx("container__inner")}>
+            <form className={cx("container__inner")} id="form1" method="post" onSubmit={handleClick}>
                 <title className={cx("title")}><span>Log in</span></title>
                 <div className={cx("fields")}>
                     <div className={cx("fields__content")}>
                         <label className={cx("fields__label")}>Username</label>
                         <input  className={cx("fields__input")}
+                                ref={ref}
                                 type='text' 
                                 placeholder='Enter your username'
                                 value={user}
                                 onChange={(e)=>setUser(e.target.value)}
+                                tabIndex="10"
                                 ></input>
                         {/* <span>invalid user</span> */}
                     </div>
@@ -64,11 +79,12 @@ function Login(){
                                 placeholder='Enter your password'
                                 value={pass}
                                 onChange={(e)=>setPass(e.target.value)}
+                                tabIndex="11"
                                 ></input>
                     </div>
                 </div>
-                <Button className={cx("button")} variant="primary" onClick={handleClick}>Login</Button>
-                
+                <Button className={cx("button")} variant="primary" onClick={handleClick} ref={refBtn}
+                >Login</Button>
             </form>
             <span className={cx("message")}>{message}</span>
         </div>

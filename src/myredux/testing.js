@@ -26,10 +26,6 @@ const asyncActionInfer = createAsyncThunk(
                     result: r.data.image_result_paths,
                     feature: r.data.features
                 }
-                console.log(r.data.features)
-                console.log(r.data.features[0])
-                console.log(r.data.features[0].Adress)
-                console.log(r.data.features[0].Dob)
             })
             .catch((e)=>{
                 console.log(e)
@@ -64,6 +60,12 @@ const testing = createSlice({
         },
         actionSetViewIndex(state,action){
             state.viewIndex = action.payload
+        },
+        actionAddViewIndex(state,action){
+            state.viewIndex += action.payload
+        },
+        actionSubViewIndex(state,action){
+            state.viewIndex -= action.payload
         },
         actionClearTesting(state,action){
             return {

@@ -52,6 +52,7 @@ const mapShowImageProp2Action = {
     'actionSetLoadingMode': mode.actions.actionSetLoadingMode,
     'actionSetCurrentTrainingModel': training.actions.actionSetCurrentTrainingModel,
     'actionSetToastMode': mode.actions.actionSetToastMode,
+    'actionRemoveUploadSample': training.actions.actionRemoveUploadSample
 }
 const mapTrainingProp2State = (state)=>{
     return {
@@ -120,7 +121,9 @@ const mapMainShowResultProp2State = (state)=>{
     }
 }
 const mapMainShowResultProp2Action = {
-    'actionSetViewIndex': testing.actions.actionSetViewIndex
+    'actionSetViewIndex': testing.actions.actionSetViewIndex,
+    'actionAddViewIndex': testing.actions.actionAddViewIndex,
+    'actionSubViewIndex': testing.actions.actionSubViewIndex,
 }
 
 const mapProgressBarProp2State = (state)=>{

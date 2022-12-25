@@ -1,6 +1,6 @@
 import axios from 'axios'
 import classNames from 'classnames/bind'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SideBarShowResultConnect,MainShowResultConnect } from '~/connect'
 import styles from './ShowResult.module.scss'
@@ -138,7 +138,8 @@ function SideBarShowResult({uploadTestImages,activeImage,actionSetActiveImage,ac
         </div>
     )
 }
-function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actionSetViewIndex}){
+function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actionSetViewIndex,
+    actionAddViewIndex,actionSubViewIndex}){
     // let check = useRef(false)
     const [imageViews,setImageView] = useState({
         'images':[],
@@ -147,9 +148,9 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
     
     
     useEffect(()=>{
-        
-        if(resultImages[activeImage]==null & typeof(resultImages[activeImage])=='undefined'){
+        if(resultImages[activeImage]==null){
             // check.current = false
+
             setImageView({
                 'images': [],
                 'features': []
@@ -167,32 +168,30 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
         actionSetViewIndex(0)
         
     },[activeImage,resultImages])
+    
     useEffect(()=>{
         const myEvent = (e)=>{
+            console.log('viewIndex: ',viewIndex)
             console.log(e.key)
             console.log(viewIndex)
             if(e.key=='ArrowRight'){
-                if(viewIndex < (imageViews.images.length - 1))
-                {
-                    let temp = viewIndex + 1
-                    actionSetViewIndex(temp)
-                }
+                // if(viewIndex < (imageViews.images.length - 1))
+                // {
+                actionAddViewIndex(1)
+                // }
             }
-            if(e.key=='ArrowLeft' && viewIndex!=0){
-                let temp = viewIndex - 1
-                actionSetViewIndex(temp)
+            if(e.key=='ArrowLeft'){
+                actionSubViewIndex(1)
             }
         }
         document.addEventListener('keydown',myEvent)
         return ()=>{document.removeEventListener('keydown',myEvent)}
     },[])
-    const Draw = useCallback(()=>{
+    const Draw = ()=>{
         let result = []
-        console.log('viewIndex: ',viewIndex)
+        
         if(imageViews.features[viewIndex]==null) {
-            console.log('null')
-            console.log('imageViews.features: ',imageViews.features)
-            console.log('viewIndex: ',viewIndex)
+            
             return false
         }
         for (const [key, value] of Object.entries(imageViews.features[viewIndex])) {
@@ -205,7 +204,7 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
             result.push(x)
         }
         return result
-    })
+    }
     return (
         <div className={cx("main-section")}>
             <div className={cx("main__title")}>
@@ -247,7 +246,15 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
                 <div className={cx("slide__center")}>
                     <div className={cx("slide__content")}>
                         <div className={cx("slide__content__preview")}>
-                            <img src={imageViews.images[viewIndex]}></img>   
+                            <img src={imageViews.images[viewIndex]}
+                                atl="no cards foundedaa"
+                                // onChange={(e)=>{
+                                //     console.log(e.target.src)
+                                //     if(typeof(e.target.src)=='undefined'){
+                                //         e.target.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6P5ilXnB8MBK1a2oH69J6QirU1T-qa862RA&usqp=CAU'
+                                //     }
+                                // }}
+                            ></img>   
                         </div>
                         <div className={cx("slide__content__info")}>
                         {   

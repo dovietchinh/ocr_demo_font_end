@@ -3,10 +3,11 @@ import styles from './ShowImage.module.scss'
 import {Col,Button,Row} from 'react-bootstrap'
 import pred_icon from '~/assets/images/prev.png'
 import next_icon from '~/assets/images/next.png'
-import image_4 from '~/assets/images/image_4.png'
-import image_5 from '~/assets/images/image_5.png'
+// import image_4 from '~/assets/images/image_4.png'
+import trash from '~/assets/images/trash.svg'
 import tool_item_1 from '~/assets/images/tool_item_1.png'
 import tool_item_2 from '~/assets/images/tool_item_2.png'
+import plus_icon from '~/assets/images/plus.png'
 import { useState,useRef, useEffect, Children } from 'react'
 import axios from 'axios'
 
@@ -14,7 +15,8 @@ let cx = classNames.bind(styles)
 function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     setModeDraw,children,setProgressBar,
                     customer_ID,stateDraw,actionSetLoadingMode,
-                    actionSetCurrentTrainingModel,actionSetToastMode}){
+                    actionSetCurrentTrainingModel,actionSetToastMode,
+                    actionRemoveUploadSample}){
     const [listLabels,setListLabels] = useState(["asdasd",'asdkgasd'])
     const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
@@ -185,14 +187,14 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                 onClick={()=>{
                                     if(activeIndex > 0 )
                                     {setActiveIndex(activeIndex-1)} 
-                                    if(activeIndex == startIndex.current & startIndex.current>0){
-                                        
+
+                                    if(activeIndex == startIndex.current & startIndex.current>0){    
                                         startIndex.current -= 1
                                     }      
-                                }}>
+                                }}
+                                >
                             <img src={pred_icon}></img>
                         </button>
-                        {/* <ul> */}
                             {uploadSamples.map((ele,index,array)=>
                             {   
                                 if(index > startIndex.current+3){
@@ -207,15 +209,24 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                 }
                                 return (
                                     <div key={index} className={cx("default-img")+" "+temp}
-                                    onClick={(e)=>{
-                                        setActiveIndex(index)
-                                        }}>
+                                        onClick={(e)=>{
+                                            setActiveIndex(index)
+                                        }}
+                                        onKeyDown={(e)=>{
+                                            console.log(e.key)
+                                            if(e.key=='Delete')
+                                            {   
+                                                if(index==uploadSamples.length-1){setActiveIndex(index-1)}
+                                                actionRemoveUploadSample(index)
+                                            }
+                                        }}
+                                        tabIndex={0}
+                                        >
                                         <img src={ele} ></img>
                                     </div>  
                                 )
                             }
                             )}
-                        {/* </ul> */}
                         <button className={cx("btn-nav","btn-next")} 
                                 onClick={()=>{
                                     if(activeIndex<uploadSamples.length-1)
@@ -239,6 +250,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     <div className={cx("tool-items")}>
                         <img src={tool_item_2}></img>
                     </div>
+                    <div className={cx("tool-items")}>
+                        <img src={trash} ></img>
+                    </div>
                 </div>
             </div>
             <div>
@@ -249,7 +263,12 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
         </div>
         <div className={cx("sidebar")}>
             <div className={cx("sidebar__content")}>
-                <div className={cx("sidebar__title")}></div>
+                <div className={cx("sidebar__title")}>
+                    <span className={cx("sidebar__title__span")}>LABELS</span>
+                    <div className={cx("sidebar__title__plus")}>
+                        <img src={plus_icon}/>
+                    </div>
+                </div>
                 <div className={cx("sidebar__labels")}>
                     {
                         listLabels.map((ele,index)=>{
@@ -258,6 +277,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                 key={"sidebar__labels__items_"+index}
                                 >
                                     <span>{ele}</span>
+                                    <div className={cx("sidebar__labels__items__circle")}>
+                                        <img src={plus_icon}/>
+                                    </div>
+
                                 </div>
                             )
                         })

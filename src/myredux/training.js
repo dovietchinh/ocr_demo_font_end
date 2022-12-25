@@ -27,6 +27,9 @@ const training = createSlice({
         actionUploadSamples(state,action){
             state.uploadSamples.push(action.payload)
         },
+        actionRemoveUploadSample(state,action){
+            state.uploadSamples.splice(action.payload,1)
+        },
         actionSwitchModeDraw(state,action){
             if(typeof(action.payload)=="undefined"){
                 return {

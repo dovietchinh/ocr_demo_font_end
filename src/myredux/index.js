@@ -22,6 +22,20 @@ const middleWareLogin = store => next => action =>{
     }
     next(action)
 }
+const middleWareKeyDownSlide = store => next => action =>{
+    let state = store.getState()
+    let a = state.testing.viewIndex
+    
+    if(action.type=='testing/actionSubViewIndex'){
+        if(a==0){action.payload=0}
+    }
+    if(action.type=='testing/actionAddViewIndex'){
+        let b = state.testing.resultImages
+        let c = state.testing.resultImages[state.testing.activeImage]
+        if(a==c.length-1){action.payload=0}
+    }
+    next(action)
+}
 const middleWareChangeSelectedModel = store => next => action => {
     if(action.type=='mode/actionSetSelectedModel'){
         let ReloadAPI = async () =>{
@@ -90,7 +104,7 @@ const store = configureStore({
     'reducer':persistedReducer,
     // devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middleWareLogin,middleWareChangeSelectedModel,middleWareCheckDone,thunk),
+    getDefaultMiddleware().concat(middleWareLogin,middleWareChangeSelectedModel,middleWareCheckDone,middleWareKeyDownSlide,thunk),
 })
 const persistor = persistStore(store)
 export {mode,testing,training}
