@@ -1,8 +1,102 @@
 import React, { useEffect, useRef, useState, useCallback } from "react"
 import classNames from 'classnames/bind'
 import styles from './DrawLayout.module.scss'
-import dragElement from './dragElement'
+import dragElement,{makeResizableDiv} from './dragElement'
 let cx = classNames.bind(styles)
+
+function MyRect(){
+    let enableDrag = useRef(false)
+    let pos1 = useRef()
+    let pos2 = useRef()
+    let pos3 = useRef()
+    let pos4 = useRef()
+    let ref = useRef()
+    let ref2 = useRef()
+    let ref3 = useRef()
+    let ref4 = useRef()
+    let ref5 = useRef()
+    // useEffect(()=>{
+    //     makeResizableDiv('.resizers')
+    // },[])
+    return(
+        <div className={cx("sammple_rect")}
+            ref={ref}
+
+                onMouseDown={(e)=>{
+                    if(e.target !== e.currentTarget) return;
+                    console.log('parent')              
+                    pos3.current = e.pageX;
+                    pos4.current = e.pageY;
+                    enableDrag.current = true
+                }}
+                onMouseMove={e=>{
+                    if(e.target !== e.currentTarget) return;
+                    
+                    console.log('parent')              
+                    console.log(e.pageX,e.pageY)
+                    e.preventDefault()
+                    if(enableDrag.current){
+                        pos1.current = pos3.current - e.pageX;
+                        pos2.current = pos4.current - e.pageY;
+                        pos3.current = e.pageX;
+                        pos4.current = e.pageY;
+                        // let x = e.target.getAttribute('x')
+                        // let y = e.target.getAttribute('y')
+                        // x = parseFloat(x)
+                        // y = parseFloat(y)
+                        // e.target.setAttribute('x',x - pos1)
+                        // e.target.setAttribute('y',y - pos2)
+                        // e.target.style.transform
+                        e.target.style.top = (e.target.offsetTop - pos2.current) + "px"
+                        e.target.style.left = (e.target.offsetLeft - pos1.current) + "px"
+                    }
+                }}
+                onMouseLeave={(e)=>{
+                    if(e.target !== e.currentTarget) return;
+                    
+                    // console.log('parent')              
+                    enableDrag.current = false
+                }}
+                onMouseUp={(e)=>{     
+                    if(e.target !== e.currentTarget) return;
+                    console.log('parent')              
+                    enableDrag.current = false
+                }}
+                >
+                    {/* <div className={cx('resizers')} >
+                        <div className={cx("resizer","top")} ref={ref2}></div>
+                        <div className={cx("resizer","right")} ref={ref3}></div>
+                        <div className={cx("resizer","bottom")} ref={ref4}></div>
+                        <div className={cx("resizer","left")} ref={ref5}></div>
+                    </div> */}
+                    {/* <div className='resizers'>
+                        <div className='resizer top'></div>
+                        <div className='resizer right'></div>
+                        <div className='resizer bottom'></div>
+                        <div className='resizer left'></div>
+                    </div> */}
+                    <div className={cx("point1")}
+                        onMouseDown={e=>{
+                            pos3.current = e.pageX;
+                            pos4.current = e.pageY;
+                            enableDrag.current = true
+                        }}
+                        onMouseMove={e=>{
+                            console.log('children')
+                        }}
+                        // onMouseLeave={e=>{
+                        //     // console.log('children')
+                        // }}
+                        onMouseUp={e=>{
+                            console.log('children')
+                        }}
+                    ></div> 
+                    
+                </div>
+    )
+}
+
+
 function DrawLayout({stateDraw,setStateDraw,listRect}){
     let rect = useRef()
     let refRectItems = useRef([])
@@ -92,6 +186,7 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
     }
     return (
         <div className={cx("container")} onClick={handleClick} tabIndex="-1"  onMouseMove={handleMouseMove}> 
+            <MyRect></MyRect>
             <svg className={cx("svg")} id="svg-draw">
                 {   
                     stateDraw['listRect'].map((ele,index)=>{
@@ -106,12 +201,13 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                         let height = endPoint[1] - startPoint[1]
                         width = Math.max(width,-width)
                         height = Math.max(height,-height)
-                        let text_height = Math.min(Math.max(height*0.2,30),20)
-                        let text_width = Math.min(Math.max(width*0.5,100),64)
-                       
+                        // let text_height = Math.min(Math.max(height*0.2,30),20)
+                        // let text_width = Math.min(Math.max(width*0.5,100),64)
+                        let pos1,pos2,pos3,pos4
+                        let enableDrag = false
                         return (
                             <React.Fragment>
-                            <foreignObject key={index+"_input"} width={width} height={text_height} x={x} y={y-text_height} className={cx("input-tag")} 
+                            {/* <foreignObject key={index+"_input"} width={width} height={text_height} x={x} y={y-text_height} className={cx("input-tag")} 
                             style={{maxWidth:width,minWidth:"16px"}}
                             // ref={el=>refInputItems.current[index]=el}
                             id={`foreingnObject_${index}`}
@@ -139,7 +235,7 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                                     }}
                                     style={{maxWidth:width,minWidth:"16px"}}
                                 ></input>
-                            </foreignObject>
+                            </foreignObject> */}
                             <rect key={index+"_rect"} 
                                     x={x}
                                     y={y}
@@ -151,11 +247,44 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                                     tabIndex="1"
                                     style={{"zIndex": index+100}}
                                     onMouseDown={(e)=>{
-                                        let temp = document.getElementById(`foreingnObject_${index}`)                      
-                                        dragElement(e.target,temp)
+                                        // let temp = document.getElementById(`foreingnObject_${index}`)                      
+                                        // dragElement(e.target)
+                                        // e = e || window.event;
+                                        pos3 = e.pageX;
+                                        pos4 = e.pageY;
+                                        enableDrag = true
                                     }}
-                                    
+                                    onMouseMove={e=>{
+                                        if(enableDrag){
+                                            pos1 = pos3 - e.pageX;
+                                            pos2 = pos4 - e.pageY;
+                                            pos3 = e.pageX;
+                                            pos4 = e.pageY;
+                                            let x = e.target.getAttribute('x')
+                                            let y = e.target.getAttribute('y')
+                                            x = parseFloat(x)
+                                            y = parseFloat(y)
+                                            e.target.setAttribute('x',x - pos1)
+                                            e.target.setAttribute('y',y - pos2)
+                                        }
+                                    }}
+                                    onMouseLeave={(e)=>{
+                                        enableDrag = false
+                                    }}
+                                    onMouseUp={(e)=>{
+                                        // let temp = document.getElementById(`foreingnObject_${index}`)                      
+                                        enableDrag = false
+                                        // dragElement(e.target)
+                                    }}
+                                    onKeyDown={(e)=>{
+                                        console.log(e.key)
+                                        e.preventDefault()
+                                        if(e.ctrlKey==true && e.key=='1'){
+                                            console.log('ok')
+                                        }
+                                    }}
                                     onKeyUp={(e)=>{
+                                        console.log(e.key)
                                         if(e.key=='Delete')
                                         {
                                             let newListRect = [...stateDraw.listRect]

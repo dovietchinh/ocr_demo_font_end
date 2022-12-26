@@ -314,7 +314,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                     }}>
                                         <img src={trash}></img>
                                     </div>
-                                    <span className={cx("sidebar__labels__items__number")}>{index}</span>
+                                    <span className={cx("sidebar__labels__items__number")}>{index+1}</span>
                                     <input className={cx("sidebar__labels__items__text")}
                                             value={ele}
                                             onChange={(e)=>{
