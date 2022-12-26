@@ -9,15 +9,16 @@ const initState = {
     'uploadSamples': [],
     'modeDraw': false,
     'progressBar':false,
-    'stateDraw':{
-        'enable': false,
-        'startpoint': null,
-        'listRect': [],
-        'listLabel': [],
-    },
-    // 'stateDraw': [],
+    // 'stateDraw':{
+    //     'enable': false,
+    //     'startpoint': null,
+    //     'listRect': [],
+    //     'listLabel': [],
+    // },
+    'stateDraw': [],
     'activeIndex': 0,
     'currentTrainingModel': "",
+    'listLabels': [],
 }
 
 
@@ -26,20 +27,32 @@ const training = createSlice({
     name: 'training',
     initialState : initState,
     reducers:{
+        actionSetListLabels(state,action){
+            
+
+            if(typeof(action.payload)=='function'){
+                
+                state.listLabels = action.payload(state.listLabels)
+            }
+            else{
+                state.listLabels = action.payload
+            }
+            
+        },
         actionUploadSamples(state,action){
             state.uploadSamples.push(action.payload)
-            // state.stateDraw.push(
-            //     {
-            //         'enable': false,
-            //         'startpoint': null,
-            //         'listRect': [],
-            //         'listLabel': [],
-            //     }
-            // )
+            state.stateDraw.push(
+                {
+                    'enable': false,
+                    'startpoint': null,
+                    'listRect': [],
+                    'listLabel': [],
+                }
+            )
         },
         actionRemoveUploadSample(state,action){
             state.uploadSamples.splice(action.payload,1)
-            // state.stateDraw.splice(action.payload,1)
+            state.stateDraw.splice(action.payload,1)
         },
         actionSetActiveIndex(state,action){
             state.activeIndex =  action.payload
@@ -81,22 +94,23 @@ const training = createSlice({
                 'uploadSamples': [],
                 'modeDraw': false,
                 'progressBar':false,
-                'stateDraw':{
-                    'enable': false,
-                    'startpoint': null,
-                    'listRect': [],
-                    'listLabel': [],
-                }
-                // 'stateDraw': []
+                // 'stateDraw':{
+                //     'enable': false,
+                //     'startpoint': null,
+                //     'listRect': [],
+                //     'listLabel': [],
+                // }
+                'stateDraw': []
             }
         },
         actionSetStateDraw(state,action){
             
             if(typeof(action.payload)=='function'){
-                state.stateDraw = action.payload(state.stateDraw)
+                
+                state.stateDraw[state.activeIndex] = action.payload(state.stateDraw[state.activeIndex])
             }
             else{
-                state.stateDraw = action.payload
+                state.stateDraw[state.activeIndex] = action.payload
             }
             
         }

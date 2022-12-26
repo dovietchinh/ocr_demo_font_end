@@ -32,8 +32,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     customer_ID,stateDraw,actionSetLoadingMode,
                     actionSetCurrentTrainingModel,actionSetToastMode,
                     actionRemoveUploadSample,
-                    activeIndex,setActiveIndex}){
-    const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
+                    activeIndex,setActiveIndex,
+                    listLabels,setListLabels}){
+    // const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
     // const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     const [text,setText] = useState("")
@@ -61,9 +62,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
         let fetchData = async ()=>{
             // actionSetLoadingMode(true)
             let fake_json1 = {}
-            if(stateDraw.listRect.length!=0){
-                for(let i=0;i<stateDraw.listRect.length;i++){
-                    fake_json1[stateDraw.listLabel[i]] = {
+            if(stateDraw[activeIndex].listRect.length!=0){
+                for(let i=0;i<stateDraw[activeIndex].listRect.length;i++){
+                    fake_json1[stateDraw[activeIndex].listLabel[i]] = {
                         "output":true,
                         "field_info":[
                             [
@@ -101,8 +102,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                 
 
                 
-                for(let i=0;i<stateDraw.listRect.length;i++){
-                    let bbox = stateDraw.listRect[i]
+                for(let i=0;i<stateDraw[activeIndex].listRect.length;i++){
+                    let bbox = stateDraw[activeIndex].listRect[i]
 
                     
                     let xtl = Math.min(bbox[0][0],bbox[1][0])
@@ -118,14 +119,14 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     //     34,
                     //     636,
                     //     124]
-                    fake_json1[stateDraw.listLabel[i]].bounding_box.push(new_bbox)
+                    fake_json1[stateDraw[activeIndex].listLabel[i]].bounding_box.push(new_bbox)
                 }
                 }
             let fake_json2 = {"QR_code":{"output":false,"field_info":[["Image","QR_code",null]],"bounding_box":[[660,30,760,130]]},"Portrait":{"output":true,"field_info":[["Image","Portrait",null]],"bounding_box":[[20,165,220,440]]},"ID":{"output":true,"field_info":[["Text","Characters","X_numbers"]],"additional_info":12,"bounding_box":[[330,205,600,240]],"font":["Times New Roman 1"],"font_size":[38],"font_type":["bold"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Name":{"output":true,"field_info":[["Text","Name","Vn"]],"bounding_box":[[240,270,780,305]],"font":["Times New Roman 1"],"font_size":[30],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["upper"]},"Dob":{"output":true,"field_info":[["Text","Time","Full_slash"]],"bounding_box":[[470,310,600,335]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Sex":{"output":true,"field_info":[["Text","Sex","Vn"]],"bounding_box":[[385,340,420,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Nat":{"output":true,"field_info":[["Text","Place","Nationality"]],"bounding_box":[[670,340,780,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Hometown":{"output":true,"field_info":[["Text","Place","Brief"]],"bounding_box":[[470,370,780,395],[240,395,780,420]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Doe":{"output":true,"field_info":[["Text","Time","Full_slash"],["Text","Time","Special"]],"bounding_box":[[130,440,230,460],[60,465,230,485]],"font":["Times New Roman 1"],"font_size":[22],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Address":{"output":true,"field_info":[["Text","Place","Full"]],"bounding_box":[[560,425,780,450],[240,450,780,475]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]}}
                 
 
             let fake_json,is_blink_template
-            if(stateDraw.listRect.length==0){
+            if(stateDraw[activeIndex].listRect.length==0){
                 fake_json = fake_json2
                 is_blink_template = true
             }
