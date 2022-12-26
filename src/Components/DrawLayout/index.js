@@ -3,101 +3,15 @@ import classNames from 'classnames/bind'
 import styles from './DrawLayout.module.scss'
 import dragElement,{makeResizableDiv} from './dragElement'
 let cx = classNames.bind(styles)
-
-function MyRect(){
-    let enableDrag = useRef(false)
-    let pos1 = useRef()
-    let pos2 = useRef()
-    let pos3 = useRef()
-    let pos4 = useRef()
-    let ref = useRef()
-    let ref2 = useRef()
-    let ref3 = useRef()
-    let ref4 = useRef()
-    let ref5 = useRef()
-    // useEffect(()=>{
-    //     makeResizableDiv('.resizers')
-    // },[])
-    return(
-        <div className={cx("sammple_rect")}
-            ref={ref}
-
-                onMouseDown={(e)=>{
-                    if(e.target !== e.currentTarget) return;
-                    console.log('parent')              
-                    pos3.current = e.pageX;
-                    pos4.current = e.pageY;
-                    enableDrag.current = true
-                }}
-                onMouseMove={e=>{
-                    if(e.target !== e.currentTarget) return;
-                    
-                    console.log('parent')              
-                    console.log(e.pageX,e.pageY)
-                    e.preventDefault()
-                    if(enableDrag.current){
-                        pos1.current = pos3.current - e.pageX;
-                        pos2.current = pos4.current - e.pageY;
-                        pos3.current = e.pageX;
-                        pos4.current = e.pageY;
-                        // let x = e.target.getAttribute('x')
-                        // let y = e.target.getAttribute('y')
-                        // x = parseFloat(x)
-                        // y = parseFloat(y)
-                        // e.target.setAttribute('x',x - pos1)
-                        // e.target.setAttribute('y',y - pos2)
-                        // e.target.style.transform
-                        e.target.style.top = (e.target.offsetTop - pos2.current) + "px"
-                        e.target.style.left = (e.target.offsetLeft - pos1.current) + "px"
-                    }
-                }}
-                onMouseLeave={(e)=>{
-                    if(e.target !== e.currentTarget) return;
-                    
-                    // console.log('parent')              
-                    enableDrag.current = false
-                }}
-                onMouseUp={(e)=>{     
-                    if(e.target !== e.currentTarget) return;
-                    console.log('parent')              
-                    enableDrag.current = false
-                }}
-                >
-                    {/* <div className={cx('resizers')} >
-                        <div className={cx("resizer","top")} ref={ref2}></div>
-                        <div className={cx("resizer","right")} ref={ref3}></div>
-                        <div className={cx("resizer","bottom")} ref={ref4}></div>
-                        <div className={cx("resizer","left")} ref={ref5}></div>
-                    </div> */}
-                    {/* <div className='resizers'>
-                        <div className='resizer top'></div>
-                        <div className='resizer right'></div>
-                        <div className='resizer bottom'></div>
-                        <div className='resizer left'></div>
-                    </div> */}
-                    <div className={cx("point1")}
-                        onMouseDown={e=>{
-                            pos3.current = e.pageX;
-                            pos4.current = e.pageY;
-                            enableDrag.current = true
-                        }}
-                        onMouseMove={e=>{
-                            console.log('children')
-                        }}
-                        // onMouseLeave={e=>{
-                        //     // console.log('children')
-                        // }}
-                        onMouseUp={e=>{
-                            console.log('children')
-                        }}
-                    ></div> 
-                    
-                </div>
-    )
-}
-
-
+const COLOR = ["#FF177B","#6E58FA","#43D2E0",
+                "#30B82D","#E958D0",
+                '#FF4500',"#9932CC","#FF8C00",
+                "#40E0D0","#F4A460",
+                "#32CD32","#708090","#7FFFD4",
+                "#FFFF00","#9ACD32","#EE82EE",
+                "#D2B48C"]
 function DrawLayout({stateDraw,setStateDraw,listRect}){
+    console.log(stateDraw)
     let rect = useRef()
     let refRectItems = useRef([])
     let refInputItems = useRef([])
@@ -108,6 +22,7 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
 
     useEffect(()=>{
         let element = document.getElementById("main-draw")
+        console.log(element)
         // Object.assign(element.style,{
         //     'position':"relative"
         // })
@@ -120,15 +35,16 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
         refInputItems.current = refInputItems.current.slice(0, stateDraw.listRect.length);
     },[listRect])
     const handleClick = (e)=>{
-        let x = e.pageX - rect.current.left
-        let y = e.pageY - rect.current.top
+        let x = e.clientX - rect.current.left
+        let y = e.clientY - rect.current.top
+        console.log('rect.current.left: ',rect.current.left)
+        console.log('rect.current.offsetLeft: ',rect.current.ofsetleft)
         if(stateDraw.enable){
             setStateDraw((prev)=>{
                 if(prev.startpoint!=null){
                     return{
                         'enable':false,
                         'startpoint':null,
-                        // 'endpoint': [x,y],
                         'listRect':[...prev.listRect,[prev.startpoint,[x,y]]],
                         'listLabel': [...prev.listLabel,[]]
                     }
@@ -152,14 +68,18 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                     ...prev,
                     'enable':!prev.enable
                 }
+            })
+            setMouse({
+                'x': e.clientX - rect.current.left,
+                'y': e.clientY - rect.current.top,
             }) 
         }
     },[])
     const handleMouseMove = (e)=>{
         if(stateDraw.enable){
             setMouse({
-                'x': e.pageX - rect.current.left,
-                'y': e.pageY - rect.current.top,
+                'x': e.clientX - rect.current.left,
+                'y': e.clientY - rect.current.top,
             })
         }
     }
@@ -184,10 +104,11 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
             )
         }
     }
+    
     return (
         <div className={cx("container")} onClick={handleClick} tabIndex="-1"  onMouseMove={handleMouseMove}> 
-            <MyRect></MyRect>
-            <svg className={cx("svg")} id="svg-draw">
+            {/* <MyRect></MyRect> */}
+            {/* <svg className={cx("svg")} id="svg-draw"> */}
                 {   
                     stateDraw['listRect'].map((ele,index)=>{
                         if(ele==null){
@@ -195,122 +116,137 @@ function DrawLayout({stateDraw,setStateDraw,listRect}){
                         }
                         let startPoint = ele[0]
                         let endPoint = ele[1]
-                        let x = Math.min(startPoint[0],endPoint[0])
+                        let x 
+                        // try{
+                        x = Math.min(startPoint[0],endPoint[0])
+                        // }
+                        // catch{
+                        console.log('startPoint:', startPoint)
+                        // }
                         let y = Math.min(startPoint[1],endPoint[1])
                         let width = endPoint[0] - startPoint[0]
                         let height = endPoint[1] - startPoint[1]
                         width = Math.max(width,-width)
                         height = Math.max(height,-height)
-                        // let text_height = Math.min(Math.max(height*0.2,30),20)
-                        // let text_width = Math.min(Math.max(width*0.5,100),64)
+                        let text_height = Math.min(Math.max(height*0.2,30),20)
+                        let text_width = Math.min(Math.max(width*0.5,100),64)
                         let pos1,pos2,pos3,pos4
                         let enableDrag = false
+                        let color = "rgba(0,0,0,0.8)"
+                        // let ref = useRef()
+                        
                         return (
+                            
                             <React.Fragment>
-                            {/* <foreignObject key={index+"_input"} width={width} height={text_height} x={x} y={y-text_height} className={cx("input-tag")} 
-                            style={{maxWidth:width,minWidth:"16px"}}
-                            // ref={el=>refInputItems.current[index]=el}
-                            id={`foreingnObject_${index}`}
-                            >
-                                <input key={index+"_input2"} className={cx("input-tag--inner")} 
-                                    onFocus={(e)=>{
-                                        let container = document.querySelector("."+cx("container"))
-                                        container.onkeyup=null
-                                        container.removeEventListener("keyup",handleKeyUp)
-                                    }}
+                            
+                            <div className={cx("sammple_rect")}
+                                // ref={ref}
+                                // id={"sammple_rect_"+String(index)}
+                                onMouseDown={(e)=>{
+                                    if(e.target !== e.currentTarget) return;
                                     
-                                    value={stateDraw.listLabel[index]}
-                                    onChange = {(e)=>{
+                                    pos3 = e.pageX;
+                                    pos4 = e.pageY;
+                                    enableDrag = true
+                                }}
+                                onMouseMove={e=>{
+                                    if(e.target !== e.currentTarget) return;
+                                    
+                                    
+                                    e.preventDefault()
+                                    if(enableDrag){
+                                        pos1 = pos3 - e.pageX;
+                                        pos2 = pos4 - e.pageY;
+                                        pos3 = e.pageX;
+                                        pos4 = e.pageY;
+                                        e.target.style.top = (e.target.offsetTop - pos2) + "px"
+                                        e.target.style.left = (e.target.offsetLeft - pos1) + "px"
+                                    }
+                                    
+                                }}
+                                onMouseLeave={(e)=>{
+                                    if(e.target !== e.currentTarget) return;
+                                    
+                                    // console.log('parent')              
+                                    enableDrag = false
+                                }}
+                                onMouseUp={(e)=>{     
+                                    if(e.target !== e.currentTarget) return;
+                                    e.preventDefault()
+                                    if(enableDrag){
+                                        enableDrag = false
+                                        let current_y = parseInt(e.target.style.top.replace("px",''))
+                                        let current_x = parseInt(e.target.style.left.replace("px",''))
+                                        let current_w = parseInt(e.target.style.width.replace("px",''))
+                                        let current_h = parseInt(e.target.style.height.replace("px",''))
+                                        console.log(current_w)
+                                        console.log(current_h)
+                                        console.log('current_x+current_w: ',current_x+current_w)
+                                        let listRect = [...stateDraw.listRect]
+                                        listRect[index] = [[current_x,current_y],[current_x+current_w,current_y+current_h]]
+                                        setStateDraw({
+                                            ...stateDraw,
+                                            listRect: listRect
+                                        })
+                                    }
+                                }}
+                                // onChange={(e)=>{
+                                //     console.log('resize')
+                                // }}
+                                tabIndex="1"
+                                onKeyDown={(e)=>{
+                                    console.log(e.key)
+                                    e.preventDefault()
+                                    if(e.ctrlKey==true && ['1','2','3','4','5','6','7','8','9'].includes(e.key)){
+                                        console.log(e.key)
+                                        color = COLOR[parseInt(e.key)-1]
                                         let newListLabel = [...stateDraw.listLabel]
-                                        newListLabel[index] = e.target.value
+                                        newListLabel[index] = e.key
                                         setStateDraw({
                                             ...stateDraw,
                                             listLabel: newListLabel
                                         })
-                                    }}
-                                    onBlur={(e)=>{
                                         
-                                        let container = document.querySelector("."+cx("container"))
-                                        container.addEventListener("keyup",handleKeyUp)
-                                    }}
-                                    style={{maxWidth:width,minWidth:"16px"}}
-                                ></input>
-                            </foreignObject> */}
-                            <rect key={index+"_rect"} 
-                                    x={x}
-                                    y={y}
-                                    width={width}
-                                    height={height}
-                                    strokeWidth={10}
-                                    ref={el=>refRectItems.current[index]=el}
-                                    className={cx("rect")}
-                                    tabIndex="1"
-                                    style={{"zIndex": index+100}}
-                                    onMouseDown={(e)=>{
-                                        // let temp = document.getElementById(`foreingnObject_${index}`)                      
-                                        // dragElement(e.target)
-                                        // e = e || window.event;
-                                        pos3 = e.pageX;
-                                        pos4 = e.pageY;
-                                        enableDrag = true
-                                    }}
-                                    onMouseMove={e=>{
-                                        if(enableDrag){
-                                            pos1 = pos3 - e.pageX;
-                                            pos2 = pos4 - e.pageY;
-                                            pos3 = e.pageX;
-                                            pos4 = e.pageY;
-                                            let x = e.target.getAttribute('x')
-                                            let y = e.target.getAttribute('y')
-                                            x = parseFloat(x)
-                                            y = parseFloat(y)
-                                            e.target.setAttribute('x',x - pos1)
-                                            e.target.setAttribute('y',y - pos2)
-                                        }
-                                    }}
-                                    onMouseLeave={(e)=>{
-                                        enableDrag = false
-                                    }}
-                                    onMouseUp={(e)=>{
-                                        // let temp = document.getElementById(`foreingnObject_${index}`)                      
-                                        enableDrag = false
-                                        // dragElement(e.target)
-                                    }}
-                                    onKeyDown={(e)=>{
-                                        console.log(e.key)
-                                        e.preventDefault()
-                                        if(e.ctrlKey==true && e.key=='1'){
-                                            console.log('ok')
-                                        }
-                                    }}
-                                    onKeyUp={(e)=>{
-                                        console.log(e.key)
-                                        if(e.key=='Delete')
-                                        {
-                                            let newListRect = [...stateDraw.listRect]
-                                            let newListLabel = [...stateDraw.listLabel]
-                                            newListRect.splice(index, 1);
-                                            newListLabel.splice(index, 1);
-                                            setStateDraw({
-                                                ... stateDraw,
-                                                'listRect' : newListRect,
-                                                'listLabel': newListLabel
-                                            })
-                                        }
-                                    }}
-                            >
-                            
-                            </rect>
+                                        
+                                        
+                                        console.log(color)
+                                        console.log(e.target.style.backgroundColor)
+                                        e.target.style.backgroundColor = COLOR[parseInt(e.key)-1]
+                                        e.target.textContent = e.key
+                                        
+                                    }
+                                }}
+                                onKeyUp={(e)=>{
+                                    console.log(e.key)
+                                    if(e.key=='Delete')
+                                    {
+                                        let newListRect = [...stateDraw.listRect]
+                                        let newListLabel = [...stateDraw.listLabel]
+                                        newListRect.splice(index, 1);
+                                        newListLabel.splice(index, 1);
+                                        setStateDraw({
+                                            ... stateDraw,
+                                            'listRect' : newListRect,
+                                            'listLabel': newListLabel
+                                        })
+                                    }
+                                }}
+                                style={{top:y,left:x,width:width,height:height,
+                                    backgroundColor: COLOR[parseInt(stateDraw.listLabel[index])-1]}}
+                                
+                                
+                                >
+                        {stateDraw.listLabel[index]}
+                        </div>
                             </React.Fragment>
-
-                            
                         )
                     })
                 }
+                <svg className={cx("svg")} id="svg-draw">
                 {
                     draw()
                 }
-            </svg>
+                </svg>
         </div>
     )
 }

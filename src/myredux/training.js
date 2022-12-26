@@ -15,6 +15,8 @@ const initState = {
         'listRect': [],
         'listLabel': [],
     },
+    // 'stateDraw': [],
+    'activeIndex': 0,
     'currentTrainingModel': "",
 }
 
@@ -26,9 +28,21 @@ const training = createSlice({
     reducers:{
         actionUploadSamples(state,action){
             state.uploadSamples.push(action.payload)
+            // state.stateDraw.push(
+            //     {
+            //         'enable': false,
+            //         'startpoint': null,
+            //         'listRect': [],
+            //         'listLabel': [],
+            //     }
+            // )
         },
         actionRemoveUploadSample(state,action){
             state.uploadSamples.splice(action.payload,1)
+            // state.stateDraw.splice(action.payload,1)
+        },
+        actionSetActiveIndex(state,action){
+            state.activeIndex =  action.payload
         },
         actionSwitchModeDraw(state,action){
             if(typeof(action.payload)=="undefined"){
@@ -73,6 +87,7 @@ const training = createSlice({
                     'listRect': [],
                     'listLabel': [],
                 }
+                // 'stateDraw': []
             }
         },
         actionSetStateDraw(state,action){

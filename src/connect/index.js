@@ -42,7 +42,8 @@ const mapShowImageProp2State = (state)=>{
         'modeDraw': state.training.modeDraw,
         'progressBar': state.training.progressBar,
         'customer_ID': state.mode.customer_ID,
-        'stateDraw' : state.training.stateDraw
+        'stateDraw' : state.training.stateDraw,
+        'activeIndex': state.training.activeIndex,
     }
 }
 const mapShowImageProp2Action = {
@@ -52,7 +53,8 @@ const mapShowImageProp2Action = {
     'actionSetLoadingMode': mode.actions.actionSetLoadingMode,
     'actionSetCurrentTrainingModel': training.actions.actionSetCurrentTrainingModel,
     'actionSetToastMode': mode.actions.actionSetToastMode,
-    'actionRemoveUploadSample': training.actions.actionRemoveUploadSample
+    'actionRemoveUploadSample': training.actions.actionRemoveUploadSample,
+    'setActiveIndex': training.actions.actionSetActiveIndex
 }
 const mapTrainingProp2State = (state)=>{
     return {
@@ -63,6 +65,7 @@ const mapTrainingProp2State = (state)=>{
 }
 const mapDrawLayoutProp2State = (state) =>{
     let listRect ,stateDraw
+    let activeIndex = state.training.activeIndex
     if(typeof( state.training.stateDraw)=='object'){
         listRect = state.training.stateDraw.listRect
         stateDraw = state.training.stateDraw
@@ -76,7 +79,7 @@ const mapDrawLayoutProp2State = (state) =>{
     }
     return {
         'stateDraw': stateDraw,
-        'listRect': listRect
+        'listRect': listRect,
     }
 }
 const mapDrawLayoutProp2Action = {

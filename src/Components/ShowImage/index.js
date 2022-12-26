@@ -18,7 +18,7 @@ import axios from 'axios'
 const COLOR = ["#FF177B","#6E58FA","#43D2E0",
                 "#30B82D","#E958D0",
                 '#FF4500',"#9932CC","#FF8C00",
-                "#FFA07A","#40E0D0","#F4A460",
+                "#40E0D0","#F4A460",
                 "#32CD32","#708090","#7FFFD4",
                 "#FFFF00","#9ACD32","#EE82EE",
                 "#D2B48C"]
@@ -31,9 +31,10 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     setModeDraw,children,setProgressBar,
                     customer_ID,stateDraw,actionSetLoadingMode,
                     actionSetCurrentTrainingModel,actionSetToastMode,
-                    actionRemoveUploadSample}){
+                    actionRemoveUploadSample,
+                    activeIndex,setActiveIndex}){
     const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
-    const [activeIndex,setActiveIndex] = useState(0)
+    // const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
     const [text,setText] = useState("")
     const [showModal,setShowModal] = useState("none")
@@ -324,6 +325,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                                     return a
                                                 })
                                             }}
+                                            placeholder='new labels'
                                             ></input>
                                     <div className={cx("sidebar__labels__items__circle")} 
                                         onClick={(e)=>{
