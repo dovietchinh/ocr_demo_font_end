@@ -12,6 +12,7 @@ const initState = {
     'modeLoginSuccess':false,
     'models':['Chip','thẻ_tạm_trú'],
     'selectedModel': "Chip",
+    'createLabelMode': true,
 }
 
 export const login = createAsyncThunk(
@@ -33,6 +34,9 @@ const mode = createSlice({
             else{
                 state.mode = action.payload
             }
+        },
+        actionSetCreateLabelMode(state,action){
+            state.createLabelMode = action.payload
         },
         actionSetToastMode(state,action){
             state.toastMode = action.payload.toastMode

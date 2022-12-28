@@ -18,9 +18,10 @@ const asyncActionInfer = createAsyncThunk(
         }
         let results;
         const response = await axios.
-            post('http://10.124.64.125:18001/infer',test_json)
+            post('http://10.124.64.125:18001/api/v1/infer',test_json)
             .then((r)=>{
                 console.log(r.data)
+                console.log('asd')
                 results = {
                     origin:r.data.original_image_path,
                     result: r.data.image_result_paths,

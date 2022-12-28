@@ -39,6 +39,17 @@ const training = createSlice({
             }
             
         },
+        actionAddListLabels(state,action){
+                // state.listLabels.push = action.payload    
+                return {
+                    ...state,
+                    listLabels: [...state.listLabels,action.payload]
+                }
+                
+        },
+        actionRemoveListLabels(state,action){
+            state.listLabels.splice(action.payload,1)
+        },
         actionUploadSamples(state,action){
             state.uploadSamples.push(action.payload)
             state.stateDraw.push(

@@ -40,7 +40,7 @@ const middleWareChangeSelectedModel = store => next => action => {
     if(action.type=='mode/actionSetSelectedModel'){
         let ReloadAPI = async () =>{
             store.dispatch(mode.actions.actionSetLoadingMode(true))
-            await axios.post('http://10.124.64.125:18002/convert',{customer_ID:action.payload})
+            await axios.post('http://10.124.64.125:18002/api/v1/convert',{customer_ID:action.payload})
                 .then((r)=>{
                     console.log('convert done')
                     console.log(r.data)
@@ -48,7 +48,7 @@ const middleWareChangeSelectedModel = store => next => action => {
                 .catch((error)=>{
                     console.log('error convert: ',error)
                 })
-            await axios.post('http://10.124.64.125:18002/reload_models',{customer_ID:action.payload})
+            await axios.post('http://10.124.64.125:18002/api/v1/reload_models',{customer_ID:action.payload})
                 .then((r)=>{
                     console.log('reload models done!')
                 })
@@ -100,8 +100,8 @@ const persistConfig = {
 }
 const persistedReducer = persistReducer(persistConfig, reducers)
 const store = configureStore({
-    // 'reducer':reducers,
-    'reducer':persistedReducer,
+    'reducer':reducers,
+    // 'reducer':persistedReducer,
     // devTools: process.env.NODE_ENV !== 'production',
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(middleWareLogin,middleWareChangeSelectedModel,middleWareCheckDone,middleWareKeyDownSlide,thunk),

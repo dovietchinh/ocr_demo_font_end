@@ -63,13 +63,15 @@ function ProgressCircle({from_percentage,percentage,children,cls}){
         </div>
     )
 }
-function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentTrainingModel,actionSetLoadingMode,selectedModel,actionSetToastMode,actionSetProgressBar,customer_ID}){
+function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentTrainingModel,actionSetLoadingMode,selectedModel,actionSetToastMode,actionSetProgressBar,customer_ID,trainingFlag}){
     const handleClick = (e)=>{
-        
+        console.log('start test before ')
+        if(trainingFlag==false){return}
+        console.log('start test after ')
         let convertAPI = async ()=>{
             actionSetLoadingMode(true)
             
-            await axios.post('http://10.124.64.125:18002/convert',{customer_ID:selectedModel})
+            await axios.post('http://10.124.64.125:18002/api/v1/convert',{customer_ID:selectedModel})
                 .then((r)=>{
                     console.log('convert done')
                     console.log(r.data)
@@ -77,7 +79,7 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentT
                 .catch((error)=>{
                     console.log('error convert: ',error)
                 })
-            await axios.post('http://10.124.64.125:18002/reload_models',{customer_ID:selectedModel})
+            await axios.post('http://10.124.64.125:18002/api/v1/reload_models',{customer_ID:selectedModel})
                 .then((r)=>{
                     console.log('reload models done!')
                 })
@@ -101,7 +103,7 @@ function ProgressBar({switchMode,currentPercent,actionSetCurrentPercent,currentT
     }
     useEffect(()=>{
         let fetchData = async ()=>{
-            await axios.post("http://10.124.64.125:18001/progress",{customer_ID:currentTrainingModel})
+            await axios.post("http://10.124.64.125:18001/api/v1/progress",{customer_ID:currentTrainingModel})
             // await axios.get(`${process.env.REACT_APP_BACKEND_TRAINING}/progress`)
             
                 .then((res)=>{

@@ -56,7 +56,8 @@ const mapShowImageProp2Action = {
     'actionSetToastMode': mode.actions.actionSetToastMode,
     'actionRemoveUploadSample': training.actions.actionRemoveUploadSample,
     'setActiveIndex': training.actions.actionSetActiveIndex,
-    'setListLabels': training.actions.actionSetListLabels
+    'setListLabels': training.actions.actionSetListLabels,
+    'actionSetCreateLabelMode': mode.actions.actionSetCreateLabelMode
 }
 const mapTrainingProp2State = (state)=>{
     return {
@@ -82,7 +83,8 @@ const mapDrawLayoutProp2State = (state) =>{
     return {
         'stateDraw': stateDraw,
         'listRect': listRect,
-        'activeIndex':activeIndex
+        'activeIndex':activeIndex,
+        'listLabels': state.training.listLabels
     }
 }
 const mapDrawLayoutProp2Action = {
@@ -141,7 +143,8 @@ const mapProgressBarProp2State = (state)=>{
             'genPercent': state.training.genPercent,
             'trainingPercent': state.training.trainingPercent,
         },
-        'selectedModel': state.mode.selectedModel
+        'selectedModel': state.mode.selectedModel,
+        'trainingFlag': state.training.trainingFlag
     }
 }
 const mapProgressBarProp2Action = {

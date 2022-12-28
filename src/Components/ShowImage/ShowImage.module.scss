@@ -301,8 +301,8 @@
     display:flex;
     justify-content: center;
     align-items: center;
-    z-index:200;
     background-color: rgba(0,0,0,0.5);
+    z-index: 100;
     .Modal__content{
         height: 200px;
         width: 500px;

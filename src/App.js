@@ -4,10 +4,11 @@ import ToastMessage from './Components/ToastMessage';
 import Loading from './Components/Loading';
 import Login from '~/Components/Login'
 import { useSelector } from 'react-redux';
+import CreateLabels from './Components/CreateLabels';
 function App() {
   const modeLoginSuccess = useSelector(state=>state.mode.modeLoginSuccess)
   const toastMode = useSelector(state=>state.mode.toastMode)
-  
+  const createLabelMode = useSelector(state=>state.mode.createLabelMode)
   if(modeLoginSuccess){
     return (
       <Router>
@@ -20,6 +21,7 @@ function App() {
             <HeaderConnect></HeaderConnect>
             {toastMode && <ToastMessageConnect/>}
             <Loading></Loading>
+            {createLabelMode &&<CreateLabels/>}
             <TrainingConnect/>
             </>
             }/>

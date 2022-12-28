@@ -8,6 +8,7 @@ import trash from '~/assets/images/trash.svg'
 import tool_item_1 from '~/assets/images/tool_item_1.png'
 import tool_item_2 from '~/assets/images/tool_item_2.png'
 import plus_icon from '~/assets/images/plus.png'
+import setting_icon from '~/assets/images/setting.png'
 import { useState,useRef, useEffect, Children } from 'react'
 import axios from 'axios'
 
@@ -33,7 +34,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     actionSetCurrentTrainingModel,actionSetToastMode,
                     actionRemoveUploadSample,
                     activeIndex,setActiveIndex,
-                    listLabels,setListLabels}){
+                    listLabels,setListLabels,
+                    actionSetCreateLabelMode}){
     // const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
     // const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
@@ -70,7 +72,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                             [
                             "Text",
                             "Name",
-                            "Vn"
+                            "Vn",
                         ]
                         ],
                         "bounding_box":[],
@@ -78,7 +80,7 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                             "Times New Roman 1"
                         ],
                         "font_size": [
-                            27
+                            "default"
                         ],
                         "font_type": [
                             "regular"
@@ -125,24 +127,25 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
             let fake_json2 = {"QR_code":{"output":false,"field_info":[["Image","QR_code",null]],"bounding_box":[[660,30,760,130]]},"Portrait":{"output":true,"field_info":[["Image","Portrait",null]],"bounding_box":[[20,165,220,440]]},"ID":{"output":true,"field_info":[["Text","Characters","X_numbers"]],"additional_info":12,"bounding_box":[[330,205,600,240]],"font":["Times New Roman 1"],"font_size":[38],"font_type":["bold"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Name":{"output":true,"field_info":[["Text","Name","Vn"]],"bounding_box":[[240,270,780,305]],"font":["Times New Roman 1"],"font_size":[30],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["upper"]},"Dob":{"output":true,"field_info":[["Text","Time","Full_slash"]],"bounding_box":[[470,310,600,335]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Sex":{"output":true,"field_info":[["Text","Sex","Vn"]],"bounding_box":[[385,340,420,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Nat":{"output":true,"field_info":[["Text","Place","Nationality"]],"bounding_box":[[670,340,780,365]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Hometown":{"output":true,"field_info":[["Text","Place","Brief"]],"bounding_box":[[470,370,780,395],[240,395,780,420]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Doe":{"output":true,"field_info":[["Text","Time","Full_slash"],["Text","Time","Special"]],"bounding_box":[[130,440,230,460],[60,465,230,485]],"font":["Times New Roman 1"],"font_size":[22],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]},"Address":{"output":true,"field_info":[["Text","Place","Full"]],"bounding_box":[[560,425,780,450],[240,450,780,475]],"font":["Times New Roman 1"],"font_size":[27],"font_type":["regular"],"font_color":[[0,0,0]],"font_align":["left"],"font_capitalize":["default"]}}
                 
 
-            let fake_json,is_blink_template
+            let fake_json,is_blank_template
             if(stateDraw[activeIndex].listRect.length==0){
                 fake_json = fake_json2
-                is_blink_template = true
+                is_blank_template = true
             }
             else{
                 fake_json = fake_json1
-                is_blink_template = false
+                is_blank_template = false
             }
             let fake_data = {
                 "customer_ID": customer_ID+"_"+text,
-                "is_blank_template":is_blink_template,
+                // "is_blank_template":is_blank_template,
+                "is_blank_template":false,
                 "image_features": fake_json,
                 "image_info": uploadSamples, 
             }
             
             
-            await axios.post("http://10.124.64.125:18001/train",fake_data)
+            await axios.post("http://10.124.64.125:18001/api/v1/train",fake_data)
                 .then((res)=>{
                     if(res.data.status==false){
                         actionSetToastMode({toastText:res.data.message, toastMode:true})
@@ -263,9 +266,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     }}>
                         <img src={tool_item_1}></img>
                     </div>
-                    <div className={cx("tool-items")}>
+                    {/* <div className={cx("tool-items")}>
                         <img src={tool_item_2}></img>
-                    </div>
+                    </div> */}
                     <div className={cx("tool-items")} onClick={(e)=>{
                         if(activeIndex==uploadSamples.length-1){setActiveIndex(activeIndex-1)}
                         actionRemoveUploadSample(activeIndex)
@@ -286,14 +289,17 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     <span className={cx("sidebar__title__span")}>LABELS</span>
                     <div className={cx("sidebar__title__plus")} 
                         onClick={(e)=>{
-                            setListLabels(prev=>[...prev,''])
+                            // setListLabels(prev=>[...prev,''])
+                            actionSetCreateLabelMode(true)
+                            
                         }}>
                         <img src={plus_icon}/>
                     </div>
                 </div>
                 <div className={cx("sidebar__labels")}>
-                    {
-                        listLabels.map((ele,index)=>{
+                    {   
+                        
+                        (listLabels || []).map((ele,index)=>{
                             return(
                                 <div className={cx("sidebar__labels__items")}
                                 key={"sidebar__labels__items_"+index}
@@ -330,7 +336,8 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                             ></input>
                                     <div className={cx("sidebar__labels__items__circle")} 
                                         onClick={(e)=>{
-                                            setListLabels(prev=>[...prev,''])
+                                            // setListLabels(prev=>[...prev,''])
+                                            actionSetCreateLabelMode(true)
                                         }}>
                                         <img src={plus_icon}/>
                                     </div>
