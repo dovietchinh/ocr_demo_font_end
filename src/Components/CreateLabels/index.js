@@ -62,7 +62,14 @@ const labelOptions = {
     },
 }
 
-
+const extraOptions = {
+    'Font family':['Times New Roman'],
+    'Font size': ['Default'],
+    'Font type': ['Regular'],
+    'Font color': ['Times New Roman'],
+    'Font align': ['Left'],
+    'Font capitalize': ['Default']
+}
 
 function CreateLabels({}){
     const dispatch = useDispatch()
@@ -175,6 +182,7 @@ function CreateLabels({}){
                                                     <input type='text'
                                                         placeholder="Enter description text"
                                                     ></input>
+                                                   
                                                 </div>
                                             )
                                         }
@@ -200,20 +208,28 @@ function CreateLabels({}){
                             </div>
                         </div>
                         <div className={cx("select--option")}> 
-                            
-                            <div className={cx("select--option--items")}>
-                                <label>asd</label>
-                                <div>
-                                    <select defaultValue="Times New Roman"
-                                        onChange={e=>{
-                                        }}>
-                                        <option value="Times New Roman"> Times New Roman</option>
-                                        <option value="Times New Roman2"> Times New Roman2</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                           
+                        {
+                            Object.keys(extraOptions).map((key,index)=>{
+                                let values = extraOptions[key]
+                                return(
+                                    <div className={cx("select--option--items")} key={"select--option--items_"+index}>
+                                        <label>{key}</label>
+                                        <div>
+                                            <select
+                                                onChange={e=>{
+                                                }}>
+                                                {
+                                                    values.map((value)=>{
+                                                        return(<option value={value}>{value}</option>)
+                                                    })
+                                                }
+                                            </select>
+                                        </div> 
+                                    </div>
+                                )
+                            })
+                        }
+
                         </div>
                         </>
                     )

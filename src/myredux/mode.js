@@ -9,7 +9,7 @@ const initState = {
     'toastMode': false,
     'loadingMode': false,
     'login': false,
-    'modeLoginSuccess':false,
+    'modeLoginSuccess':true,
     'models':['Chip','thẻ_tạm_trú'],
     'selectedModel': "Chip",
     'createLabelMode': true,
