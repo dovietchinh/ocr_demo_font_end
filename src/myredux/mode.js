@@ -9,10 +9,10 @@ const initState = {
     'toastMode': false,
     'loadingMode': false,
     'login': false,
-    'modeLoginSuccess':true,
+    'modeLoginSuccess':false,
     'models':['Chip','thẻ_tạm_trú'],
     'selectedModel': "Chip",
-    'createLabelMode': true,
+    'createLabelMode': false,
 }
 
 export const login = createAsyncThunk(

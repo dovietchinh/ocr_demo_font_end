@@ -9,23 +9,23 @@ let cx = classNames.bind(styles)
 
 const labelOptions = {
     'Characters':{
-        'options':['Numbers','Letters','Both','All'],
+        'options':['X_numbers','X_letters','X_both','X_all'],
         'haveInput': true,
     },
     'Name':{
-        'options': ['VN','Foreign alphabet'],
+        'options': ['Vn','Foreign_alphabet'],
         'haveInput': false,
     },
     'Sex':{
-        'options': ['VN','VN English 1','VN English 2','English 1','English 2'],
-        'haveInput': true,
+        'options': ['Vn','Vn_English_1','Vn_English_2','English_1','English_2'],
+        'haveInput': false,
     },
     'Time':{
-        'options': ['Full slash','Full dash','Full English 1','Full English 2','Full American English 1',
-                    'Full American English 2','Month - Year slash', 'Month - Year dash',
-                    'Month - Year English', 'Period full', 'Period full English', 'Period full American English',
-                    'Period month year', 'Period month year English', 'Period year', 'Date', 'Month', 'Month English',
-                    'Month English short', 'Year', 'Special'],
+        'options': ['Full_slash','Full_dash','Full_English','Full_English_2','Full_American_English',
+                    'Full_American_English_2','Month_year_slash', 'Month_year_dash',
+                    'Month_year_English', 'Period_full', 'Period_full_English', 'Period_full_American_English',
+                    'Period_month_year', 'Period_month_year_English', 'Period_year', 'Date', 'Month', 'Month_English',
+                    'Month_English_short', 'Year', 'Special'],
         'haveInput': false,
     },
     'Place':{
@@ -34,50 +34,75 @@ const labelOptions = {
     },
     'Job':{
         'options': ['Full','Brief'],
-        'haveInput': true,
+        'haveInput': false,
     },
     'Specialize':{
-        'options': ['VN'],
+        'options': ['Vn'],
         'haveInput': false,
     },
     'Business':{
-        'options': ['VN'],
+        'options': ['Vn'],
         'haveInput': false,
     },
     'Ethnic':{
-        'options': ['VN'],
+        'options': ['Vn'],
         'haveInput': false,
     },
     'Religion':{
-        'options': ['VN'],
+        'options': ['Vn'],
         'haveInput': false,
     },
     'Identifying characteristics':{
-        'options': ['VN'],
+        'options': ['Vn'],
         'haveInput': false,
     },
     'Others':{
         'options': [null],
-        'haveInput': true,
+        'haveInput': false,
     },
 }
 
 const extraOptions = {
-    'Font family':['Times New Roman1','Times New Roman2',''],
+    'Font family':['Times New Roman 1','Times New Roman 2','Arial 1','Arial 2','Arial 3'],
     'Font size': ['default','1','3','5','7','9','11','13','15','17','19','21','23','25','27','29','31','33','35','37','39'],
     'Font type': ['regular','bold','italic','bold italic'],
     'Font color': ['black','white','red'],
     'Font align': ['left','center','right',],
     'Font capitalize': ['default','lower','upper','capitalize']
 }
+const imageOption = ['Portrait',"Handprints","QR_code","Barcode_with_characters", "Barcode_without_characters","Other"]
 
 function CreateLabels({}){
     const dispatch = useDispatch()
-    const createLabelMode = useSelector(state=>state.mode.createLabelMode)
+    // const createLabelMode = useSelector(state=>state.mode.createLabelMode)
     const [selectType,setSelectTtype] = useState('Image')
     const [labelName,setLabelName] = useState('')
-    const [optionState,setOptionState] = useState({})
+    const [optionState,setOptionState] = useState({
+        "field_info":[
+
+        ],
+        'additional_info': '',
+        "font": [
+            "Times New Roman 1"
+        ],
+        "font_size": [
+            "default"
+        ],
+        "font_type": [
+            "regular"
+        ],
+        "font_color": [
+            'black'
+        ],
+        "font_align": [
+            "left"
+        ],
+        "font_capitalize": [
+            "default"
+        ]
+    })
     const [selectLevel2,setSelectLevel2] = useState(0)
+    const [characterLength,SetCharacterLength] = useState('')
     // const [optionLevel3,setOptionLevel2] = useState()
     return (
         <div className={cx("Modal")}>
@@ -121,7 +146,7 @@ function CreateLabels({}){
                     selectType=='Image' && (
                         <div className={cx("expand__content")}>
                             <div className={cx("expand__content--row")}>
-                                <div className={cx("expand__content__radio--items")}>
+                                {/* <div className={cx("expand__content__radio--items")}>
                                     <input type="radio"
                                      name="image--info"></input>
                                     <label>Portrait</label>
@@ -133,23 +158,30 @@ function CreateLabels({}){
                                 <div className={cx("expand__content__radio--items")}>
                                     <input type="radio" name="image--info"></input>
                                     <label>QR code</label>
-                                </div>
+                                </div> */}
+                                {
+                                    imageOption.map((ele,index)=>{
+                                        return(
+                                            <div className={cx("expand__content__radio--items")}
+                                                key={"expand__content__radio--items_"+index}>
+                                                <input type="radio" name="image--info"
+                                                        value={ele}
+                                                        onChange={(e)=>{
+                                                            setOptionState((prev)=>{
+                                                                return{
+                                                                    ...prev,
+                                                                    'field_info': [["Image",e.target.value,null]]
+                                                                }
+                                                                
+                                                            })
+                                                        }}
+                                                ></input>
+                                                <label>{ele.replaceAll('_'," ")}</label>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
-                            <div className={cx("expand__content--row")}>
-                                <div className={cx("expand__content__radio--items")}>
-                                    <input type="radio" name="image--info"></input>
-                                    <label>Barcode_with character</label>
-                                </div>
-                                <div className={cx("expand__content__radio--items")}>
-                                    <input type="radio" name="image--info"></input>
-                                    <label>Barcode_without character</label>
-                                </div>
-                                <div className={cx("expand__content__radio--items")}>
-                                    <input type="radio" name="image--info"></input>
-                                    <label>Other</label>
-                                </div>
-                            </div>
-                            <div></div>
                         </div>
                     ) 
                     || (
@@ -195,16 +227,44 @@ function CreateLabels({}){
                                                     // checked={true}
                                                     onChange={(e)=>{
                                                         console.log(e.target.value)
-                                                        console.log(e.target.checked)
-                                                        
+                                                        setOptionState((prev)=>{
+                                                            
+                                                            return {
+                                                                ...prev,
+                                                                'field_info':[...prev.field_info,["Text",Object.keys(labelOptions)[selectLevel2],ele]]
+                                                            }
+                                                        })
                                                     }}
                                                 ></input>
-                                                <span>{ele}</span>
+                                                <span>{ele.replace("X_","").replaceAll("_"," ")}</span>
                                             </div>
                                         )
                                     })
                                 }
                                 </div>
+                                {
+                                labelOptions[Object.keys(labelOptions)[selectLevel2]].haveInput && <div className={cx("input__text__length")}>
+                                    <span>Length</span>
+                                    <div>
+                                        <input type="text" placeholder='Enter number of character'
+                                            value={optionState.additional_info}
+                                            onChange={e=>{
+                                                if(/^[0-9]+$/.test(e.target.value) | e.target.value==''){
+                                                    setOptionState(prev=>{
+                                                    
+                                                        return{
+                                                            ...prev,
+                                                            'additional_info': e.target.value
+                                                        }
+                                                    }) 
+                                                }
+                                            
+                                            }}
+                                        ></input>
+                                    </div>
+
+                                </div>
+                                }
                             </div>
                         </div>
                         <div className={cx("select--option")}> 
@@ -217,6 +277,12 @@ function CreateLabels({}){
                                         <div>
                                             <select
                                                 onChange={e=>{
+                                                    setOptionState(prev=>{
+                                                        return{
+                                                            ...prev,
+                                                            [key]:[e.target.value]
+                                                        }
+                                                    })
                                                 }}>
                                                 {
                                                     values.map((value)=>{
@@ -240,6 +306,9 @@ function CreateLabels({}){
                         }}>Cancel</Button>
                         <Button variant='primary' onClick={(e)=>{
                             dispatch(training.actions.actionAddListLabels(labelName))
+                            dispatch(training.actions.actionsAddFieldInfo({
+                                [labelName]: optionState
+                            }))
                             dispatch(mode.actions.actionSetCreateLabelMode(false))
                         }}>Next</Button>
                     </div>

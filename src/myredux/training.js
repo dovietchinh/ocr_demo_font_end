@@ -19,6 +19,7 @@ const initState = {
     'activeIndex': 0,
     'currentTrainingModel': "",
     'listLabels': [],
+    'field_info': {}
 }
 
 
@@ -39,15 +40,32 @@ const training = createSlice({
             }
             
         },
+        actionsAddFieldInfo(state,action){
+            for(let [key,value] of Object.entries(action.payload)){
+                state.field_info = {
+                    ...state.field_info,
+                    [key]: value                
+                }
+            }
+        },
         actionAddListLabels(state,action){
                 // state.listLabels.push = action.payload    
+                if(state.listLabels==[] | typeof(state.listLabels)=='undefined'){
+                    return{
+                        ...state,
+                        'listLabels': [action.payload]
+                    }
+                }
                 return {
                     ...state,
-                    listLabels: [...state.listLabels,action.payload]
+                    'listLabels': [...state.listLabels,action.payload]
                 }
                 
         },
         actionRemoveListLabels(state,action){
+            let name =  state.listLabels[action.payload]
+            let {[name]:removedProperty , ...res} = state.fieldInfo
+            state.fieldInfo = {...res}
             state.listLabels.splice(action.payload,1)
         },
         actionUploadSamples(state,action){

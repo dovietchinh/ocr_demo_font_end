@@ -35,7 +35,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                     actionRemoveUploadSample,
                     activeIndex,setActiveIndex,
                     listLabels,setListLabels,
-                    actionSetCreateLabelMode}){
+                    actionSetCreateLabelMode,
+                    actionRemoveListLabels,
+                    field_info}){
     // const [listLabels,setListLabels] = useState(["asdasd",'asdkgasdssssss asdhaklsh askhdklashdaslhd asdhlaskhdlh'])
     // const [activeIndex,setActiveIndex] = useState(0)
     const startIndex = useRef(0)
@@ -68,14 +70,13 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                 for(let i=0;i<stateDraw[activeIndex].listRect.length;i++){
                     fake_json1[stateDraw[activeIndex].listLabel[i]] = {
                         "output":true,
+                        "bounding_box":[],
                         "field_info":[
-                            [
                             "Text",
                             "Name",
-                            "Vn",
-                        ]
+                            "Vn"
                         ],
-                        "bounding_box":[],
+                        
                         "font": [
                             "Times New Roman 1"
                         ],
@@ -97,7 +98,9 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                         ],
                         "font_capitalize": [
                             "default"
-                        ]
+                        ],
+                        ...field_info[stateDraw[activeIndex].listLabel[i]],
+                        
                         
                     }
                 }
@@ -314,11 +317,12 @@ function ShowImage({uploadSamples,setUploadSamples,modeDraw,
                                 style={{backgroundColor:COLOR[index]}}
                                 >   
                                     <div className={cx("delete")} onClick={(e)=>{
-                                        setListLabels((prev)=>{
-                                            let new_list = [...prev]
-                                            new_list.splice(index,1)
-                                            return new_list
-                                        })
+                                        // setListLabels((prev)=>{
+                                        //     let new_list = [...prev]
+                                        //     new_list.splice(index,1)
+                                        //     return new_list
+                                        // })
+                                        actionRemoveListLabels(index)
                                     }}>
                                         <img src={trash}></img>
                                     </div>

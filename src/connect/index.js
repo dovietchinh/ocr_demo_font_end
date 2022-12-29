@@ -44,7 +44,8 @@ const mapShowImageProp2State = (state)=>{
         'customer_ID': state.mode.customer_ID,
         'stateDraw' : state.training.stateDraw,
         'activeIndex': state.training.activeIndex,
-        'listLabels': state.training.listLabels
+        'listLabels': state.training.listLabels,
+        'field_info': state.training.field_info
     }
 }
 const mapShowImageProp2Action = {
@@ -57,7 +58,8 @@ const mapShowImageProp2Action = {
     'actionRemoveUploadSample': training.actions.actionRemoveUploadSample,
     'setActiveIndex': training.actions.actionSetActiveIndex,
     'setListLabels': training.actions.actionSetListLabels,
-    'actionSetCreateLabelMode': mode.actions.actionSetCreateLabelMode
+    'actionSetCreateLabelMode': mode.actions.actionSetCreateLabelMode,
+    'actionRemoveListLabels': training.actions.actionRemoveListLabels
 }
 const mapTrainingProp2State = (state)=>{
     return {

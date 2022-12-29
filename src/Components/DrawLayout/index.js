@@ -223,7 +223,7 @@ function DrawLayout({stateDraw,setStateDraw,listRect,listLabels}){
                                 
                                 
                                 >
-                                <span>{stateDraw.listLabel[index]}</span>
+                                {/* <span>{stateDraw.listLabel[index]}</span> */}
                                 <div className={cx("point1","point")}
                                     // style={{display:hover}}
                                     onMouseDown={(e)=>{         

@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow-x: hidden;
 }
 .container{
     // width:50vw;
@@ -21,11 +22,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 20px 40px;
     // height: 460px;
-    overflow-y: auto;
+    // overflow-y: auto;
     gap: 20px;
-    isolation: isolate;
+    // isolation: isolate;
+    animation: showup 0.5s;
+}
+@keyframes showup{
+    from{
+        transform: translateX(100%)
+    }
+    to{
+        transform: translateX(0)
+    }
 }
 .title{
     display: flex;
@@ -35,8 +45,6 @@
 
     width: 100%;
     height: 24px;
-
-
     /* Inside auto layout */
 
     flex: none;
@@ -260,9 +268,11 @@
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        padding: 0px;
-        gap: 40px;
-        height: 50%;
+        padding-left: 30px;
+        gap: 10px;
+        // height: 50%;
+        width: 100%;
+        flex-wrap: wrap;
         flex: none;
         align-self: stretch;
         flex-grow: 0;
@@ -281,7 +291,6 @@
             margin: 20px auto;
 
             /* Inside auto layout */
-
             flex: none;
             flex-grow: 1;
         }
@@ -336,7 +345,8 @@
             // flex-grow: 0;
             border: none;
             // flex-wrap: wrap;
-            
+            // text-align: center;
+            justify-content: center;
             :hover{
                 cursor: pointer;
             }
@@ -356,6 +366,7 @@
                 flex: none;
                 order: 0;
                 flex-grow: 0;
+                
             }
         }
         .btn-level2--active{
@@ -364,7 +375,7 @@
     }
     .expand2__content__right{
         display: flex;
-        // flex-direction: column;
+        flex-direction: column;
         // align-items: flex-start;
         padding: 12px 0px;
         gap: 10px;
@@ -418,6 +429,108 @@
                     color: #131313;
                 }
                 
+            }
+        }
+        .input__text__length{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0px;
+            gap: 4px;
+
+            width: 100%;
+            height: 64px;
+            flex: none;
+            align-self: stretch;
+            flex-grow: 0;
+            label{
+                width: 48px;
+                height: 20px;
+
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 20px;
+                /* identical to box height, or 143% */
+
+                display: flex;
+                align-items: center;
+                letter-spacing: 0.005em;
+
+                /* Gray 2 */
+
+                color: #4F4F4F;
+
+
+                /* Inside auto layout */
+
+                flex: none;
+                order: 0;
+                flex-grow: 0;
+            }
+            div{
+                box-sizing: border-box;
+
+/* Auto layout */
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 8px 16px;
+                isolation: isolate;
+
+                width: 320px;
+                height: 40px;
+
+                /* White */
+
+                background: #FFFFFF;
+                /* Gray/300 */
+
+                border: 1px solid #D1D5DB;
+                border-radius: 4px;
+
+                /* Inside auto layout */
+
+                flex: none;
+                order: 1;
+                flex-grow: 0;
+                input{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    padding: 0px;
+                    gap: 8px;
+                    font-family: 'Inter';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 20px;
+                    /* identical to box height, or 143% */
+
+                    display: flex;
+                    align-items: center;
+                    letter-spacing: 0.005em;
+
+                    /* Gray/500 */
+
+                    color: #6B7280;
+
+                    // width: 288px;
+                    height: 24px;
+
+                    border-radius: 4px;
+                    /* Inside auto layout */
+                    border: none;
+                    outline: none;
+                    flex: none;
+                    order: 1;
+                    align-self: stretch;
+                    flex-grow: 0;
+                    z-index: 1;
+                }
             }
         }
     }
