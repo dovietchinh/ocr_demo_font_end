@@ -63,12 +63,12 @@ const labelOptions = {
 }
 
 const extraOptions = {
-    'Font family':['Times New Roman'],
-    'Font size': ['Default'],
-    'Font type': ['Regular'],
-    'Font color': ['Times New Roman'],
-    'Font align': ['Left'],
-    'Font capitalize': ['Default']
+    'Font family':['Times New Roman1','Times New Roman2',''],
+    'Font size': ['default','1','3','5','7','9','11','13','15','17','19','21','23','25','27','29','31','33','35','37','39'],
+    'Font type': ['regular','bold','italic','bold italic'],
+    'Font color': ['black','white','red'],
+    'Font align': ['left','center','right',],
+    'Font capitalize': ['default','lower','upper','capitalize']
 }
 
 function CreateLabels({}){
