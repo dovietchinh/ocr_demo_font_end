@@ -50,6 +50,7 @@ const testing = createSlice({
         actionDeleteTestImages(state,action){
             state.uploadTestImages.splice(action.payload,1)
             state.resultImages.splice(action.payload,1)
+            state.resultFeatures.splice(action.payload,1)
         },
         actionSetActiveImage(state,action){
             state.activeImage = action.payload
@@ -92,6 +93,13 @@ const testing = createSlice({
             state.resultImages.push(action.payload.result)
             state.resultFeatures.push(action.payload.feature)
             state.activeImage = state.uploadTestImages.length - 1
+            // state = {
+            //     ...state,
+            //     uploadTestImages: state.uploadTestImages.push(action.payload.origin)
+            //     state.resultImages.push(action.payload.result)
+            //     state.resultFeatures.push(action.payload.feature)
+            // }
+            // return state
             // alert('infer done!')
         })
     }

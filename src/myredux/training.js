@@ -64,8 +64,8 @@ const training = createSlice({
         },
         actionRemoveListLabels(state,action){
             let name =  state.listLabels[action.payload]
-            let {[name]:removedProperty , ...res} = state.fieldInfo
-            state.fieldInfo = {...res}
+            let {[name]:removedProperty , ...res} = state.field_info
+            state.field_info = {...res}
             state.listLabels.splice(action.payload,1)
         },
         actionUploadSamples(state,action){

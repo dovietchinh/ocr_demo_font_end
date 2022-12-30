@@ -9,6 +9,13 @@ import store from '~/myredux'
 import { asyncActionInfer } from '~/myredux/testing'
 import next_img from '~/assets/images/next.png'
 import prev_img from '~/assets/images/prev.png'
+const COLOR = ["#FF177B","#6E58FA","#43D2E0",
+                "#30B82D","#E958D0",
+                '#FF4500',"#9932CC","#FF8C00",
+                "#40E0D0","#F4A460",
+                "#32CD32","#708090","#7FFFD4",
+                "#FFFF00","#9ACD32","#EE82EE",
+                "#D2B48C"]
 let cx = classNames.bind(styles)
 function SideBarSelectModel(){
     let models = useSelector(state=>state.mode.models)
@@ -145,7 +152,7 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
         'images':[],
         'features':[],
     })
-    
+    let [activeHoverRect,setActiveHoverRect] = useState("")
     
     useEffect(()=>{
         if(resultImages[activeImage]==null){
@@ -195,13 +202,58 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
             return false
         }
         for (const [key, value] of Object.entries(imageViews.features[viewIndex])) {
-            
+            let cls =""
+            if(key==activeHoverRect){cls="info__group--active"}
             let x = (
-                <div key={"info__group_"+key} className={cx("info__group")}>
+                <div key={"info__group_"+key} className={cx("info__group",cls)}
+                    onMouseOver={(e)=>{setActiveHoverRect(key)}}
+                    onMouseLeave={(e)=>{setActiveHoverRect("")}}
+                    >
                     <span className={cx("info__group__label")}>{key}</span>
                     <span className={cx("info__group__text")}>{value.text}</span>
                 </div>)
             result.push(x)
+        }
+        return result
+    }
+    const DrawRect = ()=>{
+        let result = []
+        
+        if(imageViews.features[viewIndex]==null) {
+            
+            return false
+        }
+        for (const [key, value] of Object.entries(imageViews.features[viewIndex])) {
+            console.log(value.bbox)
+            // let [xtl,ytl,xbr,ybr] = value.bbox[0]
+            let index_color = Object.keys(imageViews.features[viewIndex]).indexOf(key)
+            index_color = Math.max(index_color,0)
+            for(let [xtl,ytl,xbr,ybr] of value.bbox){
+                let width = xbr - xtl
+                let height = ybr - ytl
+                let cls = ""
+                console.log(xtl,ytl,xbr,ybr,width,height)
+                if(key==activeHoverRect){
+                    cls = "result-rect--active"
+                }
+                let x = (
+                    <div className={cx("result-rect",cls)}
+                    onMouseOver={e=>setActiveHoverRect(key)}
+                    onMouseLeave={e=>setActiveHoverRect("")}
+                    style={{
+                        top:ytl,
+                        left:xtl,
+                        width:width,
+                        height:height,
+                        backgroundColor: COLOR[index_color],
+                        border: "solid 3px "+ COLOR[index_color],
+                        // opacity: "0.3"
+                    }}
+                    ></div>
+                )
+                result.push(x)
+            }
+            
         }
         return result
     }
@@ -248,13 +300,11 @@ function MainShowResult({activeImage,resultImages,resultFeatures,viewIndex,actio
                         <div className={cx("slide__content__preview")}>
                             <img src={imageViews.images[viewIndex]}
                                 atl="no cards foundedaa"
-                                // onChange={(e)=>{
-                                //     console.log(e.target.src)
-                                //     if(typeof(e.target.src)=='undefined'){
-                                //         e.target.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6P5ilXnB8MBK1a2oH69J6QirU1T-qa862RA&usqp=CAU'
-                                //     }
-                                // }}
-                            ></img>   
+                            ></img>
+                            {
+                                DrawRect()
+                            }
+                            
                         </div>
                         <div className={cx("slide__content__info")}>
                         {   

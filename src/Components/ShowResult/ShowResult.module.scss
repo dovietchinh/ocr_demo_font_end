@@ -436,15 +436,26 @@
         flex: none;
         flex-grow: 0;
         background-color: #141F34;
+        position: relative;
         img{
             height: 100%;
             width: 100%;
             object-fit: contain;
+            
             // background-image: url("../../assets/images/not_found.jpg");
             // background-repeat: no-repeat;
             // background-size: 100%;
         }
+        .result-rect{
+            position: absolute;
+            opacity: 0.3;
+        }
+        .result-rect--active{
+            opacity: 0.7;
+            cursor: pointer;
+        }
     }
+    
     .slide__content__info{
         
         display: flex;
@@ -466,22 +477,27 @@
         order: 1;
         flex-grow: 1;
         overflow-y: auto;
+        // :hover{
+        //     background-color:blue;
+        // }
+        .info__group--active{
+            background-color: gray;
+            cursor: pointer;
+        }
         .info__group{
             padding: 6px auto;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             padding: 6px;
-
-            // width: 600px;
-            // height: 48px;
             border-bottom: 1px dotted gray ;
             flex: none;
             align-self: stretch;
             flex-grow: 0;
             
+            
             .info__group__label{
-                width: 16px;
+                // width: 16px;
                 height: 24px;
 
                 font-family: 'Inter';

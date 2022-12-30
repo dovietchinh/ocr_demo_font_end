@@ -220,8 +220,6 @@ function DrawLayout({stateDraw,setStateDraw,listRect,listLabels}){
                                 }}
                                 style={{top:y,left:x,width:width,height:height,
                                     backgroundColor: COLOR[parseInt(stateDraw.listLabel[index])-1]}}
-                                
-                                
                                 >
                                 {/* <span>{stateDraw.listLabel[index]}</span> */}
                                 <div className={cx("point1","point")}
